@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "EmployeeListView";
+    Layout = "~/Views/Shared/MasterPage.cshtml";
+}
+
+<h2>EmployeeListView</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{List<employee> employees = (List<employee>)ViewData["employees"];}
+
+        @foreach (var employee in employees)
+        {
+            <tr>
+                <th>@employee.employee_name</th>
+                <td>@employee.email_id</td>
+                <td>@employee.user_id</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
