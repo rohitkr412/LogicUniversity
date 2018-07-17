@@ -18,5 +18,23 @@ namespace LogicUniversity
             return query.ToList();
 
         }
+
+        public static List<department> GetDepartments()
+        {
+            var context = new LogicUniversityEntities();
+            var query = from x in context.departments select x;
+
+            return query.ToList();
+        }
+
+        public static List<collection_detail> GetCollectionDetails()
+        {
+            var context = new LogicUniversityEntities();
+            var query = from x in context.collection_detail
+                        where x.collection_status=="Collected"
+                        select x;
+
+            return query.ToList();
+        }
     }
 }

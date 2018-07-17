@@ -13,5 +13,13 @@ namespace LogicUniversity.Controllers
         {
             return View();
         }
+
+        public ActionResult List()
+        {
+            List<collection_detail> collection_detail = BusinessLogic.GetCollectionDetails();
+            ViewData["collection_detail"] = collection_detail;
+
+            return View();
+        }
     }
 }

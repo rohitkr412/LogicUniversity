@@ -303,6 +303,8 @@
     <Content Include="Views\StoreSupervisor\Index.cshtml" />
     <Content Include="Views\Employee\List.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\DepartmentRep\List.cshtml" />
+    <Content Include="Views\StoreClerk\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

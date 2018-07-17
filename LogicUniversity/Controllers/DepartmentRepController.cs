@@ -13,5 +13,13 @@ namespace LogicUniversity.Controllers
         {
             return View();
         }
+
+        public ActionResult List()
+        {
+            List<department> departments = BusinessLogic.GetDepartments();
+            ViewData["departments"] = departments;
+
+            return View();
+        }
     }
 }
