@@ -1,2 +1,1 @@
-# ADproject
-Logic University
+University Inventory
