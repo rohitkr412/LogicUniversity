@@ -51,7 +51,12 @@
                     <asp:BoundField DataField="item_number" ReadOnly="true" HeaderText="Item Number" SortExpression="item_number"/>
                     <asp:BoundField DataField="description" ReadOnly="true" HeaderText="Description" SortExpression="description"/>
                     <asp:BoundField DataField="item_requisition_quantity" ReadOnly="true" HeaderText="Quantity Requested" SortExpression="item_requisition_quantity"/>
-                   <asp:BoundField DataField="item_distributed_quantity" ReadOnly="true" HeaderText="Quantity Received" SortExpression="item_distributed_quantity"/>                    
+                   
+                    <asp:TemplateField HeaderText="Quantity Received">
+                        <ItemTemplate>
+                            <asp:TextBox ID="TextBox1" runat="server" Text='<%#Bind("item_distributed_quantity") %>'></asp:TextBox>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
 
             </asp:GridView>   

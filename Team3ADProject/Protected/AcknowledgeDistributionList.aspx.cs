@@ -41,12 +41,33 @@ namespace Team3ADProject.Protected
            if(PinCorrect())
             {
                 Response.Write("\nPin entered is correct");
+                if(!CheckIfQuantityIsGreater())
+                {
+                    //update ROD and Inventory
+                }
+                else
+                {
+                    //Say that you cannot enter bigger quantity
+                }
             }
            else
             {
                 Response.Write("\nPin is incorrect");
             }
         }
+
+        protected bool CheckIfQuantityIsGreater()
+        {
+            //Quantity cannot be greater
+            foreach(GridViewRow row in gridview1.Rows)
+            {
+
+            }
+            return true;
+        }
+
+
+
 
         protected Boolean PinCorrect()
         {
