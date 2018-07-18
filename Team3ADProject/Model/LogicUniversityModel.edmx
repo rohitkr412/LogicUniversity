@@ -447,6 +447,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spAcknowledgeDistributionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="disbursementlistid" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetDepartmentPin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="departmentname" Type="varchar" Mode="In" />
         </Function>
@@ -1119,7 +1122,10 @@
           </AssociationSet>
           <FunctionImport Name="spViewCollectionList" ReturnType="Collection(LogicUniversityModel.spViewCollectionList_Result)" />
           <FunctionImport Name="spGetDepartmentPin" ReturnType="Collection(Int32)">
-            <Parameter Name="departmentname" Mode="In" Type="String" />
+          <Parameter Name="departmentname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spAcknowledgeDistributionList" ReturnType="Collection(LogicUniversityModel.spAcknowledgeDistributionList_Result)">
+            <Parameter Name="disbursementlistid" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spViewCollectionList_Result">
@@ -1129,6 +1135,12 @@
           <Property Type="String" Name="collection_place" Nullable="false" MaxLength="30" />
           <Property Type="Time" Name="collection_time" Nullable="false" />
           <Property Type="Int32" Name="disbursement_list_id" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spAcknowledgeDistributionList_Result">
+          <Property Type="String" Name="item_number" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="description" Nullable="false" MaxLength="150" />
+          <Property Type="Int32" Name="item_requisition_quantity" Nullable="false" />
+          <Property Type="Int32" Name="item_distributed_quantity" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1337,6 +1349,16 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetDepartmentPin" FunctionName="LogicUniversityModel.Store.spGetDepartmentPin" />
+          <FunctionImportMapping FunctionImportName="spAcknowledgeDistributionList" FunctionName="LogicUniversityModel.Store.spAcknowledgeDistributionList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LogicUniversityModel.spAcknowledgeDistributionList_Result">
+                <ScalarProperty Name="item_number" ColumnName="item_number" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="item_requisition_quantity" ColumnName="item_requisition_quantity" />
+                <ScalarProperty Name="item_distributed_quantity" ColumnName="item_distributed_quantity" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

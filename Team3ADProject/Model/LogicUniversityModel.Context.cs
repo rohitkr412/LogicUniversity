@@ -56,5 +56,14 @@ namespace Team3ADProject.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetDepartmentPin", departmentnameParameter);
         }
+    
+        public virtual ObjectResult<spAcknowledgeDistributionList_Result> spAcknowledgeDistributionList(Nullable<int> disbursementlistid)
+        {
+            var disbursementlistidParameter = disbursementlistid.HasValue ?
+                new ObjectParameter("disbursementlistid", disbursementlistid) :
+                new ObjectParameter("disbursementlistid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spAcknowledgeDistributionList_Result>("spAcknowledgeDistributionList", disbursementlistidParameter);
+        }
     }
 }

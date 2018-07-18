@@ -19,12 +19,22 @@ namespace Team3ADProject.Protected
                 DateLabel.Text = Session["CollectionDate"].ToString();
                 LocationLabel.Text = Session["CollectionLocation"].ToString();
                 TimeLabel.Text = Session["CollectionTime"].ToString();
+                int disbursement_list_id = Convert.ToInt32(Session["disbursement_list_id"]);
+                myPageLoad(disbursement_list_id);
             }
             catch (Exception ex)
             {
+                
                 Response.Write("Exception " + ex);
             }
         }
+
+        protected void myPageLoad(int disbursement_list_id)
+        {
+            gridview1.DataSource = BusinessLogic.ViewAcknowledgementList(disbursement_list_id);
+            gridview1.DataBind();
+        }
+        
 
         protected void AcknowledgeButtonClick(object sender,EventArgs e)
         {

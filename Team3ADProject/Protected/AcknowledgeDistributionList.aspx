@@ -42,9 +42,21 @@
                 <asp:Label ID="LocationLabel" Text="Location" runat="server"></asp:Label>
             </td>
         </tr>
+         
     </table>
     <br /><br /><br />
+        
+        <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false" >
+                <Columns>
+                    <asp:BoundField DataField="item_number" ReadOnly="true" HeaderText="Item Number" SortExpression="item_number"/>
+                    <asp:BoundField DataField="description" ReadOnly="true" HeaderText="Description" SortExpression="description"/>
+                    <asp:BoundField DataField="item_requisition_quantity" ReadOnly="true" HeaderText="Quantity Requested" SortExpression="item_requisition_quantity"/>
+                   <asp:BoundField DataField="item_distributed_quantity" ReadOnly="true" HeaderText="Quantity Received" SortExpression="item_distributed_quantity"/>                    
+                </Columns>
 
+            </asp:GridView>   
+
+    <br /><br /><br />
     Enter Department Password :
     <asp:TextBox ID="PinTextBox" runat="server"></asp:TextBox>
     <br /><br />
