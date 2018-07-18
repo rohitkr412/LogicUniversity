@@ -46,7 +46,7 @@
     </table>
     <br /><br /><br />
         
-        <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false" >
+        <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false"  >
                 <Columns>
                     <asp:BoundField DataField="item_number" ReadOnly="true" HeaderText="Item Number" SortExpression="item_number"/>
                     <asp:BoundField DataField="description" ReadOnly="true" HeaderText="Description" SortExpression="description"/>
@@ -62,6 +62,7 @@
             </asp:GridView>   
 
     <br /><br /><br />
+
     Enter Department Password :
     <asp:TextBox ID="PinTextBox" runat="server"></asp:TextBox>
     <br /><br />

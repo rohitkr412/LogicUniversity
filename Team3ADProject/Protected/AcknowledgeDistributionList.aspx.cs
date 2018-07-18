@@ -12,6 +12,10 @@ namespace Team3ADProject.Protected
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(IsPostBack)
+            {
+               Session["SumAfterEdit"] = displayQuantity();
+            }
             try
             {
                 DepartmentNameLabel.Text = Session["DepartmentName"].ToString();
@@ -33,21 +37,31 @@ namespace Team3ADProject.Protected
         {
             gridview1.DataSource = BusinessLogic.ViewAcknowledgementList(disbursement_list_id);
             gridview1.DataBind();
+            
         }
         
 
         protected void AcknowledgeButtonClick(object sender,EventArgs e)
         {
+            int areQuantitesEditedSame = 0;
            if(PinCorrect())
             {
                 Response.Write("\nPin entered is correct");
-                if(!CheckIfQuantityIsGreater())
+                Session["SumBeforeEdit"] = displayQuantity();
+                areQuantitesEditedSame = checkQuantities();
+                switch(areQuantitesEditedSame)
                 {
-                    //update ROD and Inventory
-                }
-                else
-                {
-                    //Say that you cannot enter bigger quantity
+                    case 0:
+                        Response.Write("\nQuantites Edited Are Equal");
+                        break;
+
+                    case 1:
+                        Response.Write("\nQuantites Edited Are Greater");
+                        break;
+
+                    case -1:
+                        Response.Write("\nQuantites Edited Are Lesser");
+                        break;
                 }
             }
            else
@@ -56,15 +70,51 @@ namespace Team3ADProject.Protected
             }
         }
 
-        protected bool CheckIfQuantityIsGreater()
-        {
-            //Quantity cannot be greater
-            foreach(GridViewRow row in gridview1.Rows)
-            {
 
-            }
-            return true;
+
+
+        protected int checkQuantities()
+        {
+            /*
+             * Return +1 if quantity edited more
+             * Return 0 if quantity edited same
+             * Return -1 if quantity edited lesser
+             * */
+
+            if (Convert.ToInt32(Session["SumAfterEdit"]) > Convert.ToInt32(Session["SumBeforeEdit"])) return 1;
+
+            else if (Convert.ToInt32(Session["SumAfterEdit"]) == Convert.ToInt32(Session["SumBeforeEdit"])) return 0;
+
+            else return -1;
+            
         }
+
+
+
+
+        
+        protected int displayQuantity()
+        {
+            int sum = 0;
+            try
+            {                
+                foreach (GridViewRow row in gridview1.Rows)
+                {
+                    TextBox t = (TextBox)row.FindControl("TextBox1");
+                    sum += Convert.ToInt32(t.Text.ToString());
+
+                }
+                return sum;
+            }
+            catch(Exception e)
+            {
+                Response.Write("\n\n"+e);
+            }
+            return sum;
+
+        }
+        
+
 
 
 
@@ -81,7 +131,7 @@ namespace Team3ADProject.Protected
             catch(FormatException e)
             {
                 System.FormatException ex = e;
-                Response.Write("\nPin is numeric");
+                Response.Write("\nPin has to be numeric");
                 return false;
             }
             catch(Exception e)
@@ -90,5 +140,7 @@ namespace Team3ADProject.Protected
             }
             return false;
         }
+
+       
     }
 }
