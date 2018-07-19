@@ -43,7 +43,6 @@ namespace Team3ADProject.Model
         public virtual DbSet<supplier> suppliers { get; set; }
         public virtual DbSet<supplier_itemdetail> supplier_itemdetail { get; set; }
     
-
         public virtual ObjectResult<spViewCollectionList_Result> spViewCollectionList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spViewCollectionList_Result>("spViewCollectionList");
@@ -57,16 +56,16 @@ namespace Team3ADProject.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetDepartmentPin", departmentnameParameter);
         }
-
+    
         public virtual ObjectResult<spAcknowledgeDistributionList_Result> spAcknowledgeDistributionList(Nullable<int> disbursementlistid)
         {
             var disbursementlistidParameter = disbursementlistid.HasValue ?
                 new ObjectParameter("disbursementlistid", disbursementlistid) :
                 new ObjectParameter("disbursementlistid", typeof(int));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spAcknowledgeDistributionList_Result>("spAcknowledgeDistributionList", disbursementlistidParameter);
         }
-
+    
         public virtual ObjectResult<getPurchaseQuantityByItemCategory_Result> getPurchaseQuantityByItemCategory(Nullable<int> monthsBack)
         {
             var monthsBackParameter = monthsBack.HasValue ?
@@ -79,7 +78,19 @@ namespace Team3ADProject.Model
         public virtual ObjectResult<getRequisitionQuantityByDepartment_Result> getRequisitionQuantityByDepartment()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getRequisitionQuantityByDepartment_Result>("getRequisitionQuantityByDepartment");
-
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spLesserThanChecker(Nullable<int> disbursementListID, string itemNumber)
+        {
+            var disbursementListIDParameter = disbursementListID.HasValue ?
+                new ObjectParameter("disbursementListID", disbursementListID) :
+                new ObjectParameter("disbursementListID", typeof(int));
+    
+            var itemNumberParameter = itemNumber != null ?
+                new ObjectParameter("itemNumber", itemNumber) :
+                new ObjectParameter("itemNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLesserThanChecker", disbursementListIDParameter, itemNumberParameter);
         }
     }
 }

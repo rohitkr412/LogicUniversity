@@ -5,33 +5,42 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Team3ADProject.Code;
+using System.Drawing;
 
 namespace Team3ADProject.Protected
 {
+    
+
     public partial class AcknowledgeDistributionList : System.Web.UI.Page
     {
+
+
+       
+
         protected void Page_Load(object sender, EventArgs e)
-        {
-            if(IsPostBack)
+        {       
+            if(!IsPostBack)
             {
-               Session["SumAfterEdit"] = displayQuantity();
-            }
-            try
-            {
-                DepartmentNameLabel.Text = Session["DepartmentName"].ToString();
-                DepartmentRepresentativeLabel.Text = Session["EmployeeName"].ToString();
-                DateLabel.Text = Session["CollectionDate"].ToString();
-                LocationLabel.Text = Session["CollectionLocation"].ToString();
-                TimeLabel.Text = Session["CollectionTime"].ToString();
-                int disbursement_list_id = Convert.ToInt32(Session["disbursement_list_id"]);
-                myPageLoad(disbursement_list_id);
-            }
-            catch (Exception ex)
-            {
-                
-                Response.Write("Exception " + ex);
+                try
+                {
+                    DepartmentNameLabel.Text = Session["DepartmentName"].ToString();
+                    DepartmentRepresentativeLabel.Text = Session["EmployeeName"].ToString();
+                    DateLabel.Text = Session["CollectionDate"].ToString();
+                    LocationLabel.Text = Session["CollectionLocation"].ToString();
+                    TimeLabel.Text = Session["CollectionTime"].ToString();
+                    int disbursement_list_id = Convert.ToInt32(Session["disbursement_list_id"]);
+                    myPageLoad(disbursement_list_id);
+                }
+                catch (Exception ex)
+                {
+
+                    Response.Write("Exception " + ex);
+                }
+
             }
         }
+        
+
 
         protected void myPageLoad(int disbursement_list_id)
         {
@@ -39,83 +48,34 @@ namespace Team3ADProject.Protected
             gridview1.DataBind();
             
         }
-        
 
-        protected void AcknowledgeButtonClick(object sender,EventArgs e)
+
+        protected void AcknowledgeButton_Click(object sender, EventArgs e)
         {
-            int areQuantitesEditedSame = 0;
-           if(PinCorrect())
+            for(int i=0;i<gridview1.Rows.Count;i++)
+            {
+                int UserInput = Convert.ToInt32(((TextBox)gridview1.Rows[i].FindControl("TextBox1")).Text);
+                string temp = gridview1.Rows[i].Cells[0].Text;
+                Response.Write("<br /><br />UserInput is "+UserInput);
+                Response.Write("<br />ItemCode is "+temp);
+            }
+        }
+
+
+
+
+        protected void VerifyPasswordButtonClick(object sender, EventArgs e)
+        {
+
+            if (PinCorrect())
             {
                 Response.Write("\nPin entered is correct");
-                Session["SumBeforeEdit"] = displayQuantity();
-                areQuantitesEditedSame = checkQuantities();
-                switch(areQuantitesEditedSame)
-                {
-                    case 0:
-                        Response.Write("\nQuantites Edited Are Equal");
-                        break;
-
-                    case 1:
-                        Response.Write("\nQuantites Edited Are Greater");
-                        break;
-
-                    case -1:
-                        Response.Write("\nQuantites Edited Are Lesser");
-                        break;
-                }
             }
-           else
+            else
             {
-                Response.Write("\nPin is incorrect");
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Pin is incorrect')", true);
             }
         }
-
-
-
-
-        protected int checkQuantities()
-        {
-            /*
-             * Return +1 if quantity edited more
-             * Return 0 if quantity edited same
-             * Return -1 if quantity edited lesser
-             * */
-
-            if (Convert.ToInt32(Session["SumAfterEdit"]) > Convert.ToInt32(Session["SumBeforeEdit"])) return 1;
-
-            else if (Convert.ToInt32(Session["SumAfterEdit"]) == Convert.ToInt32(Session["SumBeforeEdit"])) return 0;
-
-            else return -1;
-            
-        }
-
-
-
-
-        
-        protected int displayQuantity()
-        {
-            int sum = 0;
-            try
-            {                
-                foreach (GridViewRow row in gridview1.Rows)
-                {
-                    TextBox t = (TextBox)row.FindControl("TextBox1");
-                    sum += Convert.ToInt32(t.Text.ToString());
-
-                }
-                return sum;
-            }
-            catch(Exception e)
-            {
-                Response.Write("\n\n"+e);
-            }
-            return sum;
-
-        }
-        
-
-
 
 
 
@@ -126,7 +86,19 @@ namespace Team3ADProject.Protected
                 string deptname = Session["DepartmentName"].ToString();
                 int EnteredPin = Convert.ToInt32(PinTextBox.Text);
                 int ActualPin = BusinessLogic.GetDepartmentPin(deptname);
-                if (EnteredPin == ActualPin) return true;
+                if (EnteredPin == ActualPin)
+                {
+                    Session["Pin"] = true;
+                    AcknowledgeButton.Enabled = true;
+                    AcknowledgeButton.BackColor = Color.Green;
+                    return true;                    
+                }
+                else
+                {
+                    Session["Pin"] = false;
+                    AcknowledgeButton.Enabled = false;
+                    AcknowledgeButton.BackColor = Color.Red;
+                }
             }
             catch(FormatException e)
             {

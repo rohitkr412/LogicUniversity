@@ -44,6 +44,10 @@
         </tr>
          
     </table>
+        <br /><br /><br />
+    Enter Department Pin :
+    <asp:TextBox ID="PinTextBox" runat="server"></asp:TextBox>
+    <asp:Button ID="VerifyPasswordButton" runat="server" Text="VerifyPin" OnClick="VerifyPasswordButtonClick" />
     <br /><br /><br />
         
         <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false"  >
@@ -54,17 +58,15 @@
                    
                     <asp:TemplateField HeaderText="Quantity Received">
                         <ItemTemplate>
-                            <asp:TextBox ID="TextBox1" runat="server" Text='<%#Bind("item_distributed_quantity") %>'></asp:TextBox>
+                            <asp:TextBox ID="TextBox1" runat="server" AutoPostBack="false" Text='<%#Eval("item_distributed_quantity") %>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
 
             </asp:GridView>   
-
-    <br /><br /><br />
-
-    Enter Department Password :
-    <asp:TextBox ID="PinTextBox" runat="server"></asp:TextBox>
     <br /><br />
-    <asp:Button ID="AcknowledgeButton" runat="server" Text="Acknowledge" OnClick="AcknowledgeButtonClick" />
+    <asp:Button ID="AcknowledgeButton" runat="server" Text="Acknowledge" Enabled="false" BackColor="Red" OnClick="AcknowledgeButton_Click"/>
+
+
+
 </asp:Content>

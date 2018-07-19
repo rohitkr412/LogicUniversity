@@ -453,11 +453,11 @@
         <Function Name="spGetDepartmentPin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="departmentname" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="spViewCollectionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="getPurchaseQuantityByItemCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="MonthsBack" Type="int" Mode="In" />
+        <Function Name="spLesserThanChecker" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="disbursementListID" Type="int" Mode="In" />
+          <Parameter Name="itemNumber" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="getRequisitionQuantityByDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spViewCollectionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="LogicUniversityModelStoreContainer">
           <EntitySet Name="adjustment" EntityType="Self.adjustment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="budget" EntityType="Self.budget" Schema="dbo" store:Type="Tables" />
@@ -1129,12 +1129,16 @@
           <Parameter Name="departmentname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spAcknowledgeDistributionList" ReturnType="Collection(LogicUniversityModel.spAcknowledgeDistributionList_Result)">
-            <Parameter Name="disbursementlistid" Mode="In" Type="Int32" />
+          <Parameter Name="disbursementlistid" Mode="In" Type="Int32" />
           </FunctionImport>      
           <FunctionImport Name="getPurchaseQuantityByItemCategory" ReturnType="Collection(LogicUniversityModel.getPurchaseQuantityByItemCategory_Result)" >
           <Parameter Name="MonthsBack" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getRequisitionQuantityByDepartment" ReturnType="Collection(LogicUniversityModel.getRequisitionQuantityByDepartment_Result)" />
+          <FunctionImport Name="spLesserThanChecker" ReturnType="Collection(Int32)">
+            <Parameter Name="disbursementListID" Mode="In" Type="Int32" />
+            <Parameter Name="itemNumber" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spViewCollectionList_Result">
           <Property Type="String" Name="employee_name" Nullable="false" MaxLength="100" />
@@ -1375,23 +1379,8 @@
       </ComplexTypeMapping>
     </ResultMapping>
   </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getPurchaseQuantityByItemCategory" FunctionName="LogicUniversityModel.Store.getPurchaseQuantityByItemCategory">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LogicUniversityModel.getPurchaseQuantityByItemCategory_Result">
-                <ScalarProperty Name="Category" ColumnName="Category" />
-                <ScalarProperty Name="PurchaseQuantity" ColumnName="PurchaseQuantity" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getRequisitionQuantityByDepartment" FunctionName="LogicUniversityModel.Store.getRequisitionQuantityByDepartment">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LogicUniversityModel.getRequisitionQuantityByDepartment_Result">
-                <ScalarProperty Name="department_id" ColumnName="department_id" />
-                <ScalarProperty Name="item_request_quantity" ColumnName="item_request_quantity" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="spLesserThanChecker" FunctionName="LogicUniversityModel.Store.spLesserThanChecker" />
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
