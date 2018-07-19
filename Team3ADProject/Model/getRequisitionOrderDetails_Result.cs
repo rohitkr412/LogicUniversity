@@ -11,13 +11,14 @@ namespace Team3ADProject.Model
 {
     using System;
     
-    public partial class spViewCollectionList_Result
+    public partial class getRequisitionOrderDetails_Result
     {
-        public string employee_name { get; set; }
-        public string department_name { get; set; }
-        public System.DateTime collection_date { get; set; }
-        public string collection_place { get; set; }
-        public System.TimeSpan collection_time { get; set; }
-        public int collection_id { get; set; }
+        public string item_number { get; set; }
+        public string category { get; set; }
+        public string description { get; set; }
+        public string unit_of_measurement { get; set; }
+        public int item_requisition_quantity { get; set; }
+        public double item_requisition_price { get; set; }
+        public double unit_price { get; set; }
     }
 }

@@ -24,17 +24,23 @@ namespace Team3ADProject.Code
             return (int)context.spGetDepartmentPin(departmentname).ToList().Single();
         }
 
-        /*
-        public static int GetIndividualRowItemQuantity()
+        
+        public static int GetIndividualRowItemQuantity(int disbursementListID,string itemNumber)
         {
-            return (int)context.spLesserThanChecker().ToList().Single();
+            return (int)context.spLesserThanChecker(disbursementListID, itemNumber).ToList().Single();
         }
-        */
 
-        public static List<spAcknowledgeDistributionList_Result> ViewAcknowledgementList(int disbursement_list_id)
+
+        public static int GetSupplyQuantity(string ItemNumber)
+        {
+            return (int)context.spCheckSupplyQuantity(ItemNumber).ToList().Single();
+        }
+        
+
+        public static List<spAcknowledgeDistributionList_Result> ViewAcknowledgementList(int collection_id)
         {
             List<spAcknowledgeDistributionList_Result> list = new List<spAcknowledgeDistributionList_Result>();
-            return list = context.spAcknowledgeDistributionList(disbursement_list_id).ToList();
+            return list = context.spAcknowledgeDistributionList(collection_id).ToList();
         }
     
 

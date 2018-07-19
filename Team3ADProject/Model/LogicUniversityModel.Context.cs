@@ -37,16 +37,10 @@ namespace Team3ADProject.Model
         public virtual DbSet<inventory> inventories { get; set; }
         public virtual DbSet<purchase_order> purchase_order { get; set; }
         public virtual DbSet<purchase_order_detail> purchase_order_detail { get; set; }
-        public virtual DbSet<requisition_disbursement_detail> requisition_disbursement_detail { get; set; }
         public virtual DbSet<requisition_order> requisition_order { get; set; }
         public virtual DbSet<requisition_order_detail> requisition_order_detail { get; set; }
         public virtual DbSet<supplier> suppliers { get; set; }
         public virtual DbSet<supplier_itemdetail> supplier_itemdetail { get; set; }
-    
-        public virtual ObjectResult<spViewCollectionList_Result> spViewCollectionList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spViewCollectionList_Result>("spViewCollectionList");
-        }
     
         public virtual ObjectResult<Nullable<int>> spGetDepartmentPin(string departmentname)
         {
@@ -55,15 +49,6 @@ namespace Team3ADProject.Model
                 new ObjectParameter("departmentname", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetDepartmentPin", departmentnameParameter);
-        }
-    
-        public virtual ObjectResult<spAcknowledgeDistributionList_Result> spAcknowledgeDistributionList(Nullable<int> disbursementlistid)
-        {
-            var disbursementlistidParameter = disbursementlistid.HasValue ?
-                new ObjectParameter("disbursementlistid", disbursementlistid) :
-                new ObjectParameter("disbursementlistid", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spAcknowledgeDistributionList_Result>("spAcknowledgeDistributionList", disbursementlistidParameter);
         }
     
         public virtual ObjectResult<getPurchaseQuantityByItemCategory_Result> getPurchaseQuantityByItemCategory(Nullable<int> monthsBack)
@@ -91,6 +76,52 @@ namespace Team3ADProject.Model
                 new ObjectParameter("itemNumber", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLesserThanChecker", disbursementListIDParameter, itemNumberParameter);
+        }
+    
+        public virtual ObjectResult<getRequisitionOrderDetails_Result> getRequisitionOrderDetails(string var)
+        {
+            var varParameter = var != null ?
+                new ObjectParameter("var", var) :
+                new ObjectParameter("var", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getRequisitionOrderDetails_Result>("getRequisitionOrderDetails", varParameter);
+        }
+    
+        public virtual ObjectResult<getRequisitionOrderDetailsforEdit_Result> getRequisitionOrderDetailsforEdit(string var)
+        {
+            var varParameter = var != null ?
+                new ObjectParameter("var", var) :
+                new ObjectParameter("var", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getRequisitionOrderDetailsforEdit_Result>("getRequisitionOrderDetailsforEdit", varParameter);
+        }
+    
+        public virtual ObjectResult<string> GetRequisitionStatus()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetRequisitionStatus");
+        }
+    
+        public virtual ObjectResult<spViewCollectionList_Result> spViewCollectionList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spViewCollectionList_Result>("spViewCollectionList");
+        }
+    
+        public virtual ObjectResult<spAcknowledgeDistributionList_Result> spAcknowledgeDistributionList(Nullable<int> collection_id)
+        {
+            var collection_idParameter = collection_id.HasValue ?
+                new ObjectParameter("collection_id", collection_id) :
+                new ObjectParameter("collection_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spAcknowledgeDistributionList_Result>("spAcknowledgeDistributionList", collection_idParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spCheckSupplyQuantity(string itemNumber)
+        {
+            var itemNumberParameter = itemNumber != null ?
+                new ObjectParameter("itemNumber", itemNumber) :
+                new ObjectParameter("itemNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spCheckSupplyQuantity", itemNumberParameter);
         }
     }
 }

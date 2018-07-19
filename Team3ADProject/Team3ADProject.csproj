@@ -327,6 +327,12 @@
     <Compile Include="Model\getPurchaseQuantityByItemCategory_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\getRequisitionOrderDetailsforEdit_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getRequisitionOrderDetails_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\getRequisitionQuantityByDepartment_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
@@ -352,9 +358,6 @@
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\purchase_order_detail.cs">
-      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\requisition_disbursement_detail.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\requisition_order.cs">

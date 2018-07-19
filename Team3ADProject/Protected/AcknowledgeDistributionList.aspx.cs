@@ -28,8 +28,8 @@ namespace Team3ADProject.Protected
                     DateLabel.Text = Session["CollectionDate"].ToString();
                     LocationLabel.Text = Session["CollectionLocation"].ToString();
                     TimeLabel.Text = Session["CollectionTime"].ToString();
-                    int disbursement_list_id = Convert.ToInt32(Session["disbursement_list_id"]);
-                    myPageLoad(disbursement_list_id);
+                    int collection_id = Convert.ToInt32(Session["collection_id"]);
+                    myPageLoad(collection_id);
                 }
                 catch (Exception ex)
                 {
@@ -42,9 +42,9 @@ namespace Team3ADProject.Protected
         
 
 
-        protected void myPageLoad(int disbursement_list_id)
+        protected void myPageLoad(int collection_id)
         {
-            gridview1.DataSource = BusinessLogic.ViewAcknowledgementList(disbursement_list_id);
+            gridview1.DataSource = BusinessLogic.ViewAcknowledgementList(collection_id);
             gridview1.DataBind();
             
         }
@@ -52,12 +52,19 @@ namespace Team3ADProject.Protected
 
         protected void AcknowledgeButton_Click(object sender, EventArgs e)
         {
-            for(int i=0;i<gridview1.Rows.Count;i++)
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Wait for Tharrani')", true);
+
+            foreach(GridViewRow row in gridview1.Rows)
             {
-                int UserInput = Convert.ToInt32(((TextBox)gridview1.Rows[i].FindControl("TextBox1")).Text);
-                string temp = gridview1.Rows[i].Cells[0].Text;
-                Response.Write("<br /><br />UserInput is "+UserInput);
-                Response.Write("<br />ItemCode is "+temp);
+                TextBox textbox = (TextBox)row.FindControl("TextBox1");
+                int UserInput = Convert.ToInt32(textbox.Text);
+                String ItemNumber = row.Cells[0].Text.ToString();
+                int ActualValue = BusinessLogic.GetSupplyQuantity(ItemNumber);
+                 
+                if(UserInput > ActualValue)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('You cannot enter more than what you had requested. Please try again')", true);
+                }
             }
         }
 

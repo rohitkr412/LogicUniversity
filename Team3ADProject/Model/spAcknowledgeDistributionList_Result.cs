@@ -15,7 +15,7 @@ namespace Team3ADProject.Model
     {
         public string item_number { get; set; }
         public string description { get; set; }
-        public int item_requisition_quantity { get; set; }
-        public int item_distributed_quantity { get; set; }
+        public Nullable<int> ordered_quantity { get; set; }
+        public Nullable<int> supply_quantity { get; set; }
     }
 }

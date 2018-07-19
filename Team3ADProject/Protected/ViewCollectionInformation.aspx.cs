@@ -28,7 +28,7 @@ namespace Team3ADProject.Protected
             Session["CollectionDate"] = gridview1.Rows[e.NewSelectedIndex].Cells[5].Text;
             Session["CollectionLocation"] = gridview1.Rows[e.NewSelectedIndex].Cells[4].Text;
             Session["CollectionTime"] = gridview1.Rows[e.NewSelectedIndex].Cells[6].Text;
-            Session["disbursement_list_id"] = gridview1.Rows[e.NewSelectedIndex].Cells[3].Text;
+            Session["collection_id"] = gridview1.Rows[e.NewSelectedIndex].Cells[3].Text;
             Response.Redirect("~/Protected/AcknowledgeDistributionList.aspx");
         }
     }
