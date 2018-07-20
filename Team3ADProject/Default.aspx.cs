@@ -13,5 +13,10 @@ namespace Team3ADProject
         {
 
         }
+
+        protected void Login1_LoggedIn(object sender, EventArgs e)
+        {
+            Response.Redirect(ResolveUrl("~/Protected/Dashboard"));
+        }
     }
 }

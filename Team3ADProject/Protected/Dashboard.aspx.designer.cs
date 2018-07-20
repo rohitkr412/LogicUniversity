@@ -13,13 +13,13 @@ namespace Team3ADProject.Protected {
     public partial class Dashboard1 {
         
         /// <summary>
-        /// RecentROGridView control.
+        /// LowStockItemGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView RecentROGridView;
+        protected global::System.Web.UI.WebControls.GridView LowStockItemGridView;
         
         /// <summary>
         /// RequisitionOrder_Link control.
@@ -29,5 +29,14 @@ namespace Team3ADProject.Protected {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton RequisitionOrder_Link;
+        
+        /// <summary>
+        /// PurchaseOrder_Link control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton PurchaseOrder_Link;
     }
 }

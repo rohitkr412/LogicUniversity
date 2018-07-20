@@ -16,6 +16,38 @@ namespace Team3ADProject
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Application["RequestID"] = 235;
         }
+
+
+        void Session_Start(object sender, EventArgs e)
+        {
+
+            // Tharrani start
+            Session["Employee"] = 19;
+            Session["Department"] = "ENGL";
+            // Tharrani end
+
+
+            //alan--start
+            Session["role"] = "11";
+
+
+            //alan-> need to code this using in User is in role after IIS setup
+            /*if (User.IsInRole("storemanager"))
+            {
+                Session["role"] = "storemanager";
+
+            }
+            else if (User.IsInRole("storesup"))
+            {
+                Session["role"] = "storesup";
+            }*/
+            //alan-- end
+
+        }
+
+
+
     }
 }

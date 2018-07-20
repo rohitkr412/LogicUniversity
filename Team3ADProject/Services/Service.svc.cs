@@ -22,7 +22,7 @@ namespace Team3ADProject.Services
 
             foreach (requisition_order ro in requisitionOrders)
             {
-                WCF_RequisitionOrder wcf_ro = new WCF_RequisitionOrder(ro.requisition_id, ro.employee_id, ro.requisition_status, ro.requisition_date);
+                WCF_RequisitionOrder wcf_ro = new WCF_RequisitionOrder(ro.requisition_id.Trim(), ro.employee_id, ro.requisition_status, ro.requisition_date);
                 wcf_requisitionOrders.Add(wcf_ro);
             }
 
@@ -51,7 +51,7 @@ namespace Team3ADProject.Services
             var context = new LogicUniversityEntities();
             var query = from x in context.inventories select x;
             List<inventory> inventories = query.ToList();
-            List <WCF_Item> wcf_items = new List<WCF_Item>();
+            List<WCF_Item> wcf_items = new List<WCF_Item>();
 
             foreach (inventory i in inventories)
             {
@@ -69,7 +69,7 @@ namespace Team3ADProject.Services
                         join i in context.inventories on d.item_number equals i.item_number
                         select new { p, d, i };
 
-            var purchaseOrders  = query.ToList();
+            var purchaseOrders = query.ToList();
             List<WCF_PurchaseOrder> wcf_purchaseOrders = new List<WCF_PurchaseOrder>();
 
             foreach (var i in purchaseOrders)
@@ -88,10 +88,13 @@ namespace Team3ADProject.Services
             var context = new LogicUniversityEntities();
             var result = context.getPurchaseQuantityByItemCategory(monthsBack);
 
-            foreach(var i in result.ToList())
+            foreach (var i in result.ToList())
             {
                 wcfList.Add(new WCF_PurchaseQuantityByItemQuantity(i.Category.Trim(), i.PurchaseQuantity));
             }
+
+
+
 
             return wcfList;
         }
@@ -111,6 +114,36 @@ namespace Team3ADProject.Services
             foreach (var i in result.ToList())
             {
                 wcfList.Add(new WCF_RequestQuantityByDepartment(i.department_id.Trim(), i.item_request_quantity));
+            }
+
+            return wcfList;
+        }
+
+        public List<WCF_Item> getLowStockItemsByCategory()
+        {
+            List<WCF_Item> wcfList = new List<WCF_Item>();
+
+            var context = new LogicUniversityEntities();
+            var result = context.getLowStockItemsByCategory();
+
+            foreach (var i in result.ToList())
+            {
+                wcfList.Add(new WCF_Item(i.item_number, i.description, i.current_quantity, i.reorder_level));
+            }
+
+            return wcfList;
+        }
+
+        public List<WCF_MegaObject> getPendingPurchaseOrderCountBySupplier()
+        {
+            List<WCF_MegaObject> wcfList = new List<WCF_MegaObject>();
+
+            var context = new LogicUniversityEntities();
+            var result = context.getPendingPurchaseOrderCountBySupplier();
+
+            foreach (var i in result.ToList())
+            {
+                wcfList.Add(new WCF_MegaObject(i.SupplierId.Trim(), i.PendingPurchaseOrderQuantity));
             }
 
             return wcfList;

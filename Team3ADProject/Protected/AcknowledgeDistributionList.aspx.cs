@@ -9,17 +9,17 @@ using System.Drawing;
 
 namespace Team3ADProject.Protected
 {
-    
+
 
     public partial class AcknowledgeDistributionList : System.Web.UI.Page
     {
 
 
-       
+
 
         protected void Page_Load(object sender, EventArgs e)
-        {       
-            if(!IsPostBack)
+        {
+            if (!IsPostBack)
             {
                 try
                 {
@@ -39,33 +39,20 @@ namespace Team3ADProject.Protected
 
             }
         }
-        
+
 
 
         protected void myPageLoad(int collection_id)
         {
             gridview1.DataSource = BusinessLogic.ViewAcknowledgementList(collection_id);
             gridview1.DataBind();
-            
+
         }
 
 
         protected void AcknowledgeButton_Click(object sender, EventArgs e)
         {
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Wait for Tharrani')", true);
 
-            foreach(GridViewRow row in gridview1.Rows)
-            {
-                TextBox textbox = (TextBox)row.FindControl("TextBox1");
-                int UserInput = Convert.ToInt32(textbox.Text);
-                String ItemNumber = row.Cells[0].Text.ToString();
-                int ActualValue = BusinessLogic.GetSupplyQuantity(ItemNumber);
-                 
-                if(UserInput > ActualValue)
-                {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('You cannot enter more than what you had requested. Please try again')", true);
-                }
-            }
         }
 
 
@@ -98,7 +85,7 @@ namespace Team3ADProject.Protected
                     Session["Pin"] = true;
                     AcknowledgeButton.Enabled = true;
                     AcknowledgeButton.BackColor = Color.Green;
-                    return true;                    
+                    return true;
                 }
                 else
                 {
@@ -107,19 +94,19 @@ namespace Team3ADProject.Protected
                     AcknowledgeButton.BackColor = Color.Red;
                 }
             }
-            catch(FormatException e)
+            catch (FormatException e)
             {
                 System.FormatException ex = e;
                 Response.Write("\nPin has to be numeric");
                 return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Response.Write("\nError occured : "+e);
+                Response.Write("\nError occured : " + e);
             }
             return false;
         }
 
-       
+
     }
 }

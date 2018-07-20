@@ -13,6 +13,25 @@ namespace Team3ADProject.Protected
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            
+            var context = new LogicUniversityEntities();
+            var recentRequisitionOrders = context.getLowStockItemsByCategory();
+
+            LowStockItemGridView.DataSource = recentRequisitionOrders.ToList();
+            LowStockItemGridView.DataBind();
+           
+            
+
+        }
+
+        protected void RequisitionOrder_Link_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(ResolveUrl("~/Protected/ClerkInventory"));
+        }
+
+        protected void PurchaseOrder_Link_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(ResolveUrl("~/Protected/PurchaseOrderListing"));
         }
     }
 }

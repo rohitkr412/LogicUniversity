@@ -21,7 +21,7 @@ namespace Team3ADProject.Protected
             gridview1.DataBind();
         }
 
-        protected void gridview1_SelectedIndexChanging(object sender,GridViewSelectEventArgs e)
+        protected void gridview1_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
         {
             Session["EmployeeName"] = gridview1.Rows[e.NewSelectedIndex].Cells[1].Text;
             Session["DepartmentName"] = gridview1.Rows[e.NewSelectedIndex].Cells[2].Text;

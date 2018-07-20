@@ -62,6 +62,7 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -148,8 +149,11 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Image\report-cover.jpg" />
     <Content Include="Content\Master.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Sites\Dashboard.css" />
+    <Content Include="Content\Sites\Default.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -206,6 +210,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="MasterPage.Master" />
+    <Content Include="Guest.Master" />
     <EntityDeploy Include="Model\LogicUniversityModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LogicUniversityModel.Designer.cs</LastGenOutput>
@@ -213,26 +219,46 @@
     <Content Include="Model\LogicUniversityModel.edmx.diagram">
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
     </Content>
-    <Content Include="MasterPage.Master" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Model\LogicUniversityModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LogicUniversityModel.Context.cs</LastGenOutput>
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
+      <LastGenOutput>LogicUniversityModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Model\LogicUniversityModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
       <LastGenOutput>LogicUniversityModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Protected\AcknowledgeDistributionList.aspx" />
+    <Content Include="Protected\Change Collection Point.aspx" />
+    <Content Include="Protected\CollectionList.aspx" />
     <Content Include="Protected\Dashboard.aspx" />
+    <Content Include="Protected\DepartmentPinChange.aspx" />
+    <Content Include="Protected\depheadpending.aspx" />
+    <Content Include="Protected\EditRequest.aspx" />
+    <Content Include="Protected\EmployeeViewHistory.aspx" />
+    <Content Include="Protected\EmployeeViewPending.aspx" />
+    <Content Include="Protected\historydetails.aspx" />
+    <Content Include="Protected\NewRequest.aspx" />
+    <Content Include="Protected\OtherPODetails.aspx" />
+    <Content Include="Protected\pendingdetails.aspx" />
+    <Content Include="Protected\depheadviewhistory.aspx" />
+    <Content Include="Protected\DelegateRole.aspx" />
+    <Content Include="Protected\ChangeRep.aspx" />
+    <Content Include="Protected\DisbursementSorting.aspx" />
+    <Content Include="Protected\AcknowledgeDistributionList.aspx" />
+    <Content Include="Protected\PendingPODetails.aspx" />
+    <Content Include="Protected\PurchaseOrderApprovalDetails.aspx" />
+    <Content Include="Protected\RequestCart.aspx" />
+    <Content Include="Protected\RequestConfirm.aspx" />
     <Content Include="Protected\ViewCollectionInformation.aspx" />
     <Content Include="Protected\AdjustmentApproval.aspx" />
     <Content Include="Protected\PurchaseOrderApproval.aspx" />
     <Content Include="Protected\PlacePurchaseOrderForm.aspx" />
     <Content Include="Protected\StagingOfPurchaseOrder.aspx" />
     <Content Include="Protected\ClerkInventory.aspx" />
+    <Content Include="Protected\ViewPOHistory.aspx" />
+    <Content Include="Protected\ViewROSpecialRequest.aspx" />
     <Content Include="Protected\WebForm2.aspx" />
     <Content Include="Protected\Report.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -246,6 +272,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.canvasjs.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
@@ -268,10 +295,13 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Services\AndroidService.svc" />
     <Content Include="Services\Service.svc" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Bundle.config" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -283,8 +313,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Code\BusinessLogic.cs" />
+    <Compile Include="Code\cart.cs" />
+    <Compile Include="Code\CollectionListItem.cs" />
     <Compile Include="Code\Constants.cs" />
-    <Compile Include="Code\StagingItem.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -294,6 +325,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Guest.Master.cs">
+      <DependentUpon>Guest.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Guest.Master.designer.cs">
+      <DependentUpon>Guest.Master</DependentUpon>
     </Compile>
     <Compile Include="MasterPage.Master.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>
@@ -324,7 +362,64 @@
     <Compile Include="Model\employee.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbyPOandStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbyPO_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbyStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbySupandPoandStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbySupandPo_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbySupandStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcountbySupplier_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorypendingcount_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getAllViewPOHistorytotalcount_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getApprovedRequisitionsWithNoDisbursementIdByDepartment_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getitemdetails_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getLowStockItemsByCategory_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getPendingPurchaseOrderCountBySupplier_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getpendingrequestdetails_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getpendingrequestsbydepartment_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\getPurchaseQuantityByItemCategory_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getRecentRequisitionOrders_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getrepdetails_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getRequestedItemQuantityLastYear_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getrequesthistory_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\getRequisitionOrderDetailsforEdit_Result.cs">
@@ -334,6 +429,39 @@
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\getRequisitionQuantityByDepartment_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetRequisitionStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getStationariesOrderedLastMonthByCategory_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getUserByToken_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getUserTokenByUsername_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbyPOandstatusandSupplier_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbyPOandSupplier_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbyPO_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountByStatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbysupandstatus_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbySupplier_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getViewPOHistorytotalcountbyPOandstatus_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\inventory.cs">
@@ -369,7 +497,31 @@
     <Compile Include="Model\spAcknowledgeDistributionList_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\spGetCollectionList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetDepartmentList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetPlaceIdFromDptId_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetRODetailsByROId_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\spViewCollectionList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetUndisbursedROList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_geteachPendingPOList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_getPendingPODetails_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_getPendingPOList_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\supplier.cs">
@@ -379,6 +531,19 @@
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protected\ClerkInventory.aspx.cs">
+      <DependentUpon>ClerkInventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\ClerkInventory.aspx.designer.cs">
+      <DependentUpon>ClerkInventory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\CollectionList.aspx.cs">
+      <DependentUpon>CollectionList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\CollectionList.aspx.designer.cs">
+      <DependentUpon>CollectionList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Protected\AcknowledgeDistributionList.aspx.cs">
       <DependentUpon>AcknowledgeDistributionList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -393,6 +558,13 @@
     <Compile Include="Protected\AdjustmentApproval.aspx.designer.cs">
       <DependentUpon>AdjustmentApproval.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Protected\Change Collection Point.aspx.cs">
+      <DependentUpon>Change Collection Point.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\Change Collection Point.aspx.designer.cs">
+      <DependentUpon>Change Collection Point.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Protected\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -400,19 +572,26 @@
     <Compile Include="Protected\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\ViewCollectionInformation.aspx.cs">
-      <DependentUpon>ViewCollectionInformation.aspx</DependentUpon>
+    <Compile Include="Protected\DisbursementSorting.aspx.cs">
+      <DependentUpon>DisbursementSorting.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Protected\ViewCollectionInformation.aspx.designer.cs">
-      <DependentUpon>ViewCollectionInformation.aspx</DependentUpon>
+    <Compile Include="Protected\DisbursementSorting.aspx.designer.cs">
+      <DependentUpon>DisbursementSorting.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\PurchaseOrderApproval.aspx.cs">
-      <DependentUpon>PurchaseOrderApproval.aspx</DependentUpon>
+    <Compile Include="Protected\EditRequest.aspx.cs">
+      <DependentUpon>EditRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Protected\PurchaseOrderApproval.aspx.designer.cs">
-      <DependentUpon>PurchaseOrderApproval.aspx</DependentUpon>
+    <Compile Include="Protected\EditRequest.aspx.designer.cs">
+      <DependentUpon>EditRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\EmployeeViewHistory.aspx.cs">
+      <DependentUpon>EmployeeViewHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\EmployeeViewHistory.aspx.designer.cs">
+      <DependentUpon>EmployeeViewHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Protected\PlacePurchaseOrderForm.aspx.cs">
       <DependentUpon>PlacePurchaseOrderForm.aspx</DependentUpon>
@@ -421,26 +600,19 @@
     <Compile Include="Protected\PlacePurchaseOrderForm.aspx.designer.cs">
       <DependentUpon>PlacePurchaseOrderForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\StagingOfPurchaseOrder.aspx.cs">
-      <DependentUpon>StagingOfPurchaseOrder.aspx</DependentUpon>
+    <Compile Include="Protected\PurchaseOrderApproval.aspx.cs">
+      <DependentUpon>PurchaseOrderApproval.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Protected\StagingOfPurchaseOrder.aspx.designer.cs">
-      <DependentUpon>StagingOfPurchaseOrder.aspx</DependentUpon>
+    <Compile Include="Protected\PurchaseOrderApproval.aspx.designer.cs">
+      <DependentUpon>PurchaseOrderApproval.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\ClerkInventory.aspx.cs">
-      <DependentUpon>ClerkInventory.aspx</DependentUpon>
+    <Compile Include="Protected\PurchaseOrderApprovalDetails.aspx.cs">
+      <DependentUpon>PurchaseOrderApprovalDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Protected\ClerkInventory.aspx.designer.cs">
-      <DependentUpon>ClerkInventory.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Protected\WebForm2.aspx.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Protected\WebForm2.aspx.designer.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
+    <Compile Include="Protected\PurchaseOrderApprovalDetails.aspx.designer.cs">
+      <DependentUpon>PurchaseOrderApprovalDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Protected\Report.aspx.cs">
       <DependentUpon>Report.aspx</DependentUpon>
@@ -448,6 +620,134 @@
     </Compile>
     <Compile Include="Protected\Report.aspx.designer.cs">
       <DependentUpon>Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\StagingOfPurchaseOrder.aspx.cs">
+      <DependentUpon>StagingOfPurchaseOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\StagingOfPurchaseOrder.aspx.designer.cs">
+      <DependentUpon>StagingOfPurchaseOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\ViewCollectionInformation.aspx.cs">
+      <DependentUpon>ViewCollectionInformation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\EmployeeViewPending.aspx.cs">
+      <DependentUpon>EmployeeViewPending.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\EmployeeViewPending.aspx.designer.cs">
+      <DependentUpon>EmployeeViewPending.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\NewRequest.aspx.cs">
+      <DependentUpon>NewRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\NewRequest.aspx.designer.cs">
+      <DependentUpon>NewRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\OtherPODetails.aspx.cs">
+      <DependentUpon>OtherPODetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\OtherPODetails.aspx.designer.cs">
+      <DependentUpon>OtherPODetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\PendingPODetails.aspx.cs">
+      <DependentUpon>PendingPODetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\PendingPODetails.aspx.designer.cs">
+      <DependentUpon>PendingPODetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\RequestCart.aspx.cs">
+      <DependentUpon>RequestCart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\RequestCart.aspx.designer.cs">
+      <DependentUpon>RequestCart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\ViewCollectionInformation.aspx.designer.cs">
+      <DependentUpon>ViewCollectionInformation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\ViewROSpecialRequest.aspx.cs">
+      <DependentUpon>ViewROSpecialRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\ViewROSpecialRequest.aspx.designer.cs">
+      <DependentUpon>ViewROSpecialRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\RequestConfirm.aspx.cs">
+      <DependentUpon>RequestConfirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\RequestConfirm.aspx.designer.cs">
+      <DependentUpon>RequestConfirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\ViewPOHistory.aspx.cs">
+      <DependentUpon>ViewPOHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\ViewPOHistory.aspx.designer.cs">
+      <DependentUpon>ViewPOHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AndroidService.svc.cs">
+      <DependentUpon>AndroidService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Services\IAndroidService.cs" />
+    <Compile Include="Protected\DepartmentPinChange.aspx.cs">
+      <DependentUpon>DepartmentPinChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\DepartmentPinChange.aspx.designer.cs">
+      <DependentUpon>DepartmentPinChange.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\depheadpending.aspx.cs">
+      <DependentUpon>depheadpending.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\depheadpending.aspx.designer.cs">
+      <DependentUpon>depheadpending.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\historydetails.aspx.cs">
+      <DependentUpon>historydetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\historydetails.aspx.designer.cs">
+      <DependentUpon>historydetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\pendingdetails.aspx.cs">
+      <DependentUpon>pendingdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\pendingdetails.aspx.designer.cs">
+      <DependentUpon>pendingdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\depheadviewhistory.aspx.cs">
+      <DependentUpon>depheadviewhistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\depheadviewhistory.aspx.designer.cs">
+      <DependentUpon>depheadviewhistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\DelegateRole.aspx.cs">
+      <DependentUpon>DelegateRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\DelegateRole.aspx.designer.cs">
+      <DependentUpon>DelegateRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\ChangeRep.aspx.cs">
+      <DependentUpon>ChangeRep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\ChangeRep.aspx.designer.cs">
+      <DependentUpon>ChangeRep.aspx</DependentUpon>
     </Compile>
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\Service.svc.cs">
@@ -468,6 +768,12 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -483,7 +789,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50772</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
