@@ -481,5 +481,57 @@ namespace Team3ADProject.Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spCheckSupplyQuantity", itemNumberParameter, collectionIDParameter);
         }
+    
+        public virtual ObjectResult<spGetRequisitionIDAndItemQuantity_Result> spGetRequisitionIDAndItemQuantity(Nullable<int> collectionID, string itemNumber)
+        {
+            var collectionIDParameter = collectionID.HasValue ?
+                new ObjectParameter("collectionID", collectionID) :
+                new ObjectParameter("collectionID", typeof(int));
+    
+            var itemNumberParameter = itemNumber != null ?
+                new ObjectParameter("ItemNumber", itemNumber) :
+                new ObjectParameter("ItemNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRequisitionIDAndItemQuantity_Result>("spGetRequisitionIDAndItemQuantity", collectionIDParameter, itemNumberParameter);
+        }
+    
+        public virtual int spUpdateItemDistributedQuantity(string itemNumber, string requisitionID, Nullable<int> itemDistributedQuantity)
+        {
+            var itemNumberParameter = itemNumber != null ?
+                new ObjectParameter("ItemNumber", itemNumber) :
+                new ObjectParameter("ItemNumber", typeof(string));
+    
+            var requisitionIDParameter = requisitionID != null ?
+                new ObjectParameter("RequisitionID", requisitionID) :
+                new ObjectParameter("RequisitionID", typeof(string));
+    
+            var itemDistributedQuantityParameter = itemDistributedQuantity.HasValue ?
+                new ObjectParameter("ItemDistributedQuantity", itemDistributedQuantity) :
+                new ObjectParameter("ItemDistributedQuantity", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateItemDistributedQuantity", itemNumberParameter, requisitionIDParameter, itemDistributedQuantityParameter);
+        }
+    
+        public virtual int spUpdateCollectionStatusCollected(Nullable<int> collection_id)
+        {
+            var collection_idParameter = collection_id.HasValue ?
+                new ObjectParameter("collection_id", collection_id) :
+                new ObjectParameter("collection_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateCollectionStatusCollected", collection_idParameter);
+        }
+    
+        public virtual int spUpdateInventory(string itemNumber, Nullable<int> difference)
+        {
+            var itemNumberParameter = itemNumber != null ?
+                new ObjectParameter("ItemNumber", itemNumber) :
+                new ObjectParameter("ItemNumber", typeof(string));
+    
+            var differenceParameter = difference.HasValue ?
+                new ObjectParameter("difference", difference) :
+                new ObjectParameter("difference", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateInventory", itemNumberParameter, differenceParameter);
+        }
     }
 }

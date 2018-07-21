@@ -53,6 +53,123 @@ namespace Team3ADProject.Protected
         protected void AcknowledgeButton_Click(object sender, EventArgs e)
         {
 
+            try
+            {
+                int collection_id = Convert.ToInt32(Session["collection_id"]);
+                bool GreaterThan = false;
+
+                for (int i = 0; i < gridview1.Rows.Count; i++)
+                {
+                    int UserInput = Convert.ToInt32(((TextBox)gridview1.Rows[i].FindControl("TextBox1")).Text);
+                    string ItemCode = gridview1.Rows[i].Cells[0].Text;
+                    int ActualSupplyQuantityValue = BusinessLogic.getActualSupplyQuantityValue(collection_id, ItemCode);
+
+                    if (UserInput > ActualSupplyQuantityValue)
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('You cannot enter more than what you requested for. Please try again later')", true);
+                        GreaterThan = true;
+                        break;
+                    }
+
+                    if (UserInput < 0)
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('No negative values allowed. Please try again')", true);
+                        GreaterThan = true;
+                        break;
+                    }
+
+                }
+
+                if (GreaterThan == false)
+                {
+                    for (int i = 0; i < gridview1.Rows.Count; i++)
+                    {
+                        int UserInput = Convert.ToInt32(((TextBox)gridview1.Rows[i].FindControl("TextBox1")).Text);
+                        string ItemCode = gridview1.Rows[i].Cells[0].Text;
+                        int ActualSupplyQuantityValue = BusinessLogic.getActualSupplyQuantityValue(collection_id, ItemCode);
+
+                        if (UserInput == ActualSupplyQuantityValue)
+                        {
+                            //logic for equal
+                        }
+                        else
+                        {
+                            //logic for lesser in else block
+
+
+
+                            //Getting data into lists of their datatypes.
+                            List<Team3ADProject.Model.spGetRequisitionIDAndItemQuantity_Result> mylist = BusinessLogic.getRequisitionIDandItemQuantity(collection_id, ItemCode);
+                            List<int> myIntegerList = new List<int>(mylist.Count);
+                            List<string> myRequsitionIDList = new List<string>(mylist.Count);
+                            for (int j = 0; j < mylist.Count; j++)
+                            {
+                                myIntegerList.Add(Convert.ToInt32(mylist[j].item_distributed_quantity));
+                                myRequsitionIDList.Add(mylist[j].requisition_id.ToString());
+                            }
+
+
+
+
+
+
+                            //Actual Logic
+                            int counter = UserInput;
+                            int myIntegerListSize = myIntegerList.Count;
+                            int minimum = counter / myIntegerListSize;
+
+                            for (int j = 0; j < myIntegerListSize; j++)
+                            {
+                                myIntegerList[j] = minimum;
+                            }
+
+                            int Reminder = Math.Abs(counter) % myIntegerListSize;
+                            for (int j = 0; j < myIntegerListSize; j++)
+                            {
+                                if (Reminder <= 0) break;
+                                else
+                                {
+                                    myIntegerList[j] = myIntegerList[j] + 1;
+                                    Reminder--;
+                                }
+
+                            }
+
+
+
+
+
+                            //update back with itemcode, requisitonID(myRequsitionIDList) and [itemdistributed quantity(myIntegerList)]
+                            for (int j = 0; j < myRequsitionIDList.Count; j++)
+                            {
+                                string requisitionID = myRequsitionIDList[j];
+                                int itemDistributedQuantity = myIntegerList[j];
+
+                                BusinessLogic.UpdateItemDistributedQuantity(ItemCode, requisitionID, itemDistributedQuantity);
+                            }
+
+
+
+
+                            //update back the difference(UserInput - ActualSupplyQuantityValue) in inventory
+                            int difference = ActualSupplyQuantityValue - UserInput;
+                            BusinessLogic.updateInventory(ItemCode,difference);
+
+
+                        }
+                    }
+                    //update status as collected
+                    BusinessLogic.updateCollectionStatus(collection_id);
+                }
+            }
+
+            catch(Exception ex)
+            {
+                Exception exx = ex;
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Oops ! Something went wrong. Please try again !')", true);
+            }
+
+            
         }
 
 

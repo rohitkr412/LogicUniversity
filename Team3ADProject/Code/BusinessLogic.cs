@@ -13,6 +13,28 @@ namespace Team3ADProject.Code
     {
         public static LogicUniversityEntities context = new LogicUniversityEntities();
 
+        public static void updateInventory(string itemCode,int difference)
+        {
+            context.spUpdateInventory(itemCode,difference);
+        }
+
+        public static void updateCollectionStatus(int collectionID)
+        {
+            context.spUpdateCollectionStatusCollected(collectionID);
+        }
+
+        public static void UpdateItemDistributedQuantity(string ItemCode,string requisitionID,int itemDistributedQuantity)
+        {
+            context.spUpdateItemDistributedQuantity(ItemCode, requisitionID, itemDistributedQuantity);
+        }
+
+        public static List<spGetRequisitionIDAndItemQuantity_Result> getRequisitionIDandItemQuantity(int collectionID,string itemCode)
+        {
+            List<spGetRequisitionIDAndItemQuantity_Result> list = new List<spGetRequisitionIDAndItemQuantity_Result>();
+            return list = context.spGetRequisitionIDAndItemQuantity(collectionID, itemCode).ToList();
+        }
+        
+
         public static List<getpendingrequestsbydepartment_Result> ViewPendingRequests(string deptid)
         {
             List<getpendingrequestsbydepartment_Result> list = new List<getpendingrequestsbydepartment_Result>();
@@ -309,8 +331,13 @@ department.department_id.Equals(dept)
             return (int)context.spGetDepartmentPin(departmentname).ToList().Single();
         }
 
-        
-        
+        public static int getActualSupplyQuantityValue(int collectionID, String ItemCode)
+        {
+            return (int)context.spCheckSupplyQuantity(ItemCode, collectionID).ToList().Single();
+        }
+
+
+
         public static inventory GetInventory(string id)
         {
             return context.inventories.Where(i => i.item_number == id).ToList<inventory>()[0];

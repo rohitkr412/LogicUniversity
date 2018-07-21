@@ -506,6 +506,9 @@
     <Compile Include="Model\spGetPlaceIdFromDptId_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\spGetRequisitionIDAndItemQuantity_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\spGetRODetailsByROId_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
@@ -540,6 +543,7 @@
     </Compile>
     <Compile Include="Protected\CollectionList.aspx.cs">
       <DependentUpon>CollectionList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Protected\CollectionList.aspx.designer.cs">
       <DependentUpon>CollectionList.aspx</DependentUpon>
@@ -630,6 +634,7 @@
     </Compile>
     <Compile Include="Protected\ViewCollectionInformation.aspx.cs">
       <DependentUpon>ViewCollectionInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Protected\EmployeeViewPending.aspx.cs">
       <DependentUpon>EmployeeViewPending.aspx</DependentUpon>
@@ -678,6 +683,7 @@
     </Compile>
     <Compile Include="Protected\WebForm2.aspx.cs">
       <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Protected\RequestConfirm.aspx.cs">
       <DependentUpon>RequestConfirm.aspx</DependentUpon>
