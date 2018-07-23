@@ -113,26 +113,61 @@ namespace Team3ADProject.Protected
 
 
 
-                            //Actual Logic
+                            //Actual Logic before 23/07/2018
+                            //int counter = UserInput;
+                            //int myIntegerListSize = myIntegerList.Count;
+                            //int minimum = counter / myIntegerListSize;
+
+                            //for (int j = 0; j < myIntegerListSize; j++)
+                            //{
+                            //    myIntegerList[j] = minimum;
+                            //}
+
+                            //int Reminder = Math.Abs(counter) % myIntegerListSize;
+                            //for (int j = 0; j < myIntegerListSize; j++)
+                            //{
+                            //    if (Reminder <= 0) break;
+                            //    else
+                            //    {
+                            //        myIntegerList[j] = myIntegerList[j] + 1;
+                            //        Reminder--;
+                            //    }
+
+                            //}
+
+
+
+
+
+
+
+                            //Actual logic 23/07/2018 Monday
                             int counter = UserInput;
                             int myIntegerListSize = myIntegerList.Count;
                             int minimum = counter / myIntegerListSize;
 
-                            for (int j = 0; j < myIntegerListSize; j++)
+                            int adder = 0, k = -1;
+                            while (true)
                             {
-                                myIntegerList[j] = minimum;
+                                k++;
+                                if (adder < UserInput)
+                                {
+                                    adder = adder + myIntegerList[k];
+                                }
+                                if (adder >= UserInput)
+                                {
+                                    break;
+                                }
                             }
 
-                            int Reminder = Math.Abs(counter) % myIntegerListSize;
-                            for (int j = 0; j < myIntegerListSize; j++)
-                            {
-                                if (Reminder <= 0) break;
-                                else
-                                {
-                                    myIntegerList[j] = myIntegerList[j] + 1;
-                                    Reminder--;
-                                }
 
+                            int temp = adder - UserInput;
+                            myIntegerList[k] = myIntegerList[k] - temp;
+                            k++;
+
+                            for (; k < myIntegerListSize; k++)
+                            {
+                                myIntegerList[k] = 0;
                             }
 
 
