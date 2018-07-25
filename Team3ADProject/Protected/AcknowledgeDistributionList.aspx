@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="AcknowledgeDistributionList.aspx.cs" Inherits="Team3ADProject.Protected.AcknowledgeDistributionList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <br /><br /><br />
+    <h1>Acknowledge Distribution List</h1>
     <table>
         <tr>
             <th>
@@ -47,10 +47,10 @@
         <br /><br /><br />
     Enter Department Pin :
     <asp:TextBox ID="PinTextBox" runat="server"></asp:TextBox>
-    <asp:Button ID="VerifyPasswordButton" runat="server" Text="VerifyPin" OnClick="VerifyPasswordButtonClick" />
+    <asp:Button ID="VerifyPasswordButton" runat="server" Text="Verify Pin" OnClick="VerifyPasswordButtonClick" CssClass="btn btn-default"/>
     <br /><br /><br />
         
-        <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false"  >
+        <asp:GridView ID="gridview1" runat="server"  AutoGenerateColumns="false" CssClass="table table-hover" >
                 <Columns>
                     <asp:BoundField DataField="item_number" ReadOnly="true" HeaderText="Item Number" SortExpression="item_number"/>
                     <asp:BoundField DataField="description" ReadOnly="true" HeaderText="Description" SortExpression="description"/>
@@ -65,7 +65,7 @@
 
             </asp:GridView>   
     <br /><br />
-    <asp:Button ID="AcknowledgeButton" runat="server" Text="Acknowledge" Enabled="false" BackColor="Red" OnClick="AcknowledgeButton_Click"/>
+    <asp:Button ID="AcknowledgeButton" runat="server" Text="Acknowledge" Enabled="false" OnClick="AcknowledgeButton_Click" CssClass="btn btn-success"/>
 
 
 

@@ -146,17 +146,27 @@ namespace Team3ADProject.Protected
             int Empid = (int)Session["Employee"];
             string Depid = (string)Session["Department"]; //19 belongs to ENGL dep
             DateTime d = DateTime.Now.Date;
-            int i = (int)Application["RequestID"] + 1;
-            string id = Depid + "/" + DateTime.Now.Year.ToString() + "/" + Application["RequestID"];
+            //int i = (int)Application["RequestID"] + 1;
+            unique_id u = BusinessLogic.getlastrequestid(Depid);
+            int i = (int)u.req_id + 1;
+            string id = Depid.Trim() + "/" + DateTime.Now.Year.ToString() + "/" + i;
             BusinessLogic.AddNewRequisitionOrder(id, Empid, d);
             List<cart> cart = (List<cart>)Session["RequestCart"];
-            for(int xi=0;xi<cart.Count;xi++)
+            for (int xi = 0; xi < cart.Count; xi++)
             {
                 BusinessLogic.AddRequisitionOrderDetail(cart[xi], id);
             }
-            Application["RequestID"] = i;
+            //Application["RequestID"] = i;
+            BusinessLogic.updatelastrequestid(Depid, i);
             Session["RequestCart"] = null;
+            // string to = BusinessLogic.GetEmployee((int)Session["Head_id"]).email_id;
+            string to = "tharrani2192@gmail.com";
+            string ename = BusinessLogic.GetEmployee(Empid).employee_name;
+            string sub = "Stationery System: New request raised for your approval";
+            string body = "New Request ID" + i + "has been placed by" + ename + "for your approval";
+            BusinessLogic.sendMail(to, sub, body);
             Response.Redirect("~/Protected/RequestConfirm.aspx?id=" + id);
+
         }
 
         protected void TextBox1_TextChanged(object sender, EventArgs e)

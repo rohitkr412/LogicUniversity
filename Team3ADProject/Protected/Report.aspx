@@ -1,39 +1,50 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Report.aspx.cs" Inherits="Team3ADProject.Protected.Report1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Generate Report</h1>
     <div>
         <div>
-        Chart to generate: <asp:DropDownList ID="DropDownList1" runat="server">
-            <asp:ListItem Value="placeholder">Select an item..</asp:ListItem>
-            <asp:ListItem Value="requisitionOrderStatusChart">Requisition Order Status Percentage</asp:ListItem>
-            <asp:ListItem Value="testChart">Test Chart</asp:ListItem>
-            <asp:ListItem Value="requisitionOrderDateChart">Requisition Order By Date</asp:ListItem>
-            <asp:ListItem Value="purchaseQuantityByItemQuantityBarChart">Stationaries purchased ordered by Item Quantity</asp:ListItem>
-            <asp:ListItem Value="requisitionQuantityByDepartmentChart">Requisition Item Quantity by Department</asp:ListItem>
-            <asp:ListItem Value="pendingPurchaseOrderCountBySupplierChart">pendingPurchaseOrderCountBySupplierChart</asp:ListItem>
-            
-        </asp:DropDownList>
+            Chart to generate:
+            <asp:DropDownList ID="ChartList" runat="server" OnSelectedIndexChanged="ChartList_SelectedIndexChanged">
+                <asp:ListItem Value="placeholder">Select an item..</asp:ListItem>
+                <asp:ListItem Value="requisitionOrderStatusChart">Requisition Order Status Percentage</asp:ListItem>
+                <asp:ListItem Value="requisitionOrderDateChart">Requisition Order By Date</asp:ListItem>
+                <asp:ListItem Value="requisitionQuantityByDepartmentChart">Requisition Item Quantity by Department</asp:ListItem>
+                <asp:ListItem Value="purchaseQuantityByItemCategoryBarChart">Stationaries purchased ordered by Item Category</asp:ListItem>
+                <asp:ListItem Value="pendingPurchaseOrderCountBySupplierChart">Pending Purchase Orders By Suppliers</asp:ListItem>
+
+            </asp:DropDownList>
+        </div>
+        <div>Start Date</div>
+        <input type="text" id="startDate" runat="server" ClientIDMode="static" class="datePicker" disabled value="-"/><asp:RequiredFieldValidator ID="StartDateRequiredValidator" runat="server" ControlToValidate="startDate" ErrorMessage="This field is required!"></asp:RequiredFieldValidator>
+        <asp:RegularExpressionValidator ID="StartDateValidator" runat="server" ControlToValidate="startDate" ErrorMessage="Date must be in the format dd-mm-yyyy" ValidationExpression="[0123][0-9]-[01][0-9]-[0-9]{4}" Enabled="false"></asp:RegularExpressionValidator>
+&nbsp;<div>End Date</div>
+        <input type="text" id="endDate" runat="server" ClientIDMode="static" class="datePicker" disabled value="-"/>
+
+        <script>
+            $(document).ready(function () {
+                $(".datePicker").datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    maxDate: new Date
+                });
+                
+                var chartStartDate = $("#startDate").val();
+                var chartEndDate = $("#endDate").val();
+            });
+        </script>
+        <asp:RequiredFieldValidator ID="EndDateRequiredValidator" runat="server" ControlToValidate="endDate" ErrorMessage="This field is required!"></asp:RequiredFieldValidator>
+        <asp:RegularExpressionValidator ID="EndDateValidator" runat="server" ControlToValidate="endDate" ErrorMessage="Date must be in the format dd-mm-yyyy" ValidationExpression="[0123][0-9]-[01][0-9]-[0-9]{4}" Enabled="false"></asp:RegularExpressionValidator>
+        <br />
+        <asp:Button ID="submitButton" runat="server" Text="Submit" CssClass="btn btn-primary" />
+
+        <div id="message" runat="server"></div>
+
+        <div id="<%=ChartList.SelectedValue%>" class="chart-container">
+
         </div>
 
-        <div>
-        <%if (DropDownList1.SelectedValue == "purchaseQuantityByItemQuantityBarChart") { %>
-            Months ago: <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>       
-        <% }%>
-        </div>
+
         
-        <asp:Button ID="submitButton" runat="server" Text="Submit"/>
-
     </div>
 
-    <div class="container">
-      <div id="<%=DropDownList1.SelectedValue%>" 
-
-        <%if (DropDownList1.SelectedValue == "purchaseQuantityByItemQuantityBarChart") {%> 
-            monthsParam="<%=TextBox1.Text%>"
-        <% }%>>
-
-      </div>
-      <div id="chartMessage"></div>
-    </div>
-    
 </asp:Content>

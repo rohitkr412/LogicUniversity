@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="ViewPOHistory.aspx.cs" Inherits="Team3ADProject.Protected.ViewPOHistory" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <h1>View Purchase Order History</h1>
+    
     <div>
     <asp:Label ID="Label1" runat="server" Text="Supplier"></asp:Label>
     <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
@@ -17,8 +19,9 @@
     <asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList>
     </div>
     <asp:Button ID="Button1" runat="server" Text="Search" CssClass="btn btn-primary" OnClick="Button1_Click" />
+
     <div>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound">
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" CssClass="table table-hover">
             <Columns>
                 <asp:BoundField DataField="supplier_name" HeaderText="Supplier Name">
                 <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" />

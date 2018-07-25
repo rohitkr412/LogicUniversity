@@ -9,14 +9,8 @@ using System.Drawing;
 
 namespace Team3ADProject.Protected
 {
-
-
     public partial class AcknowledgeDistributionList : System.Web.UI.Page
     {
-
-
-
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -108,39 +102,6 @@ namespace Team3ADProject.Protected
                                 myRequsitionIDList.Add(mylist[j].requisition_id.ToString());
                             }
 
-
-
-
-
-
-                            //Actual Logic before 23/07/2018
-                            //int counter = UserInput;
-                            //int myIntegerListSize = myIntegerList.Count;
-                            //int minimum = counter / myIntegerListSize;
-
-                            //for (int j = 0; j < myIntegerListSize; j++)
-                            //{
-                            //    myIntegerList[j] = minimum;
-                            //}
-
-                            //int Reminder = Math.Abs(counter) % myIntegerListSize;
-                            //for (int j = 0; j < myIntegerListSize; j++)
-                            //{
-                            //    if (Reminder <= 0) break;
-                            //    else
-                            //    {
-                            //        myIntegerList[j] = myIntegerList[j] + 1;
-                            //        Reminder--;
-                            //    }
-
-                            //}
-
-
-
-
-
-
-
                             //Actual logic 23/07/2018 Monday
                             int counter = UserInput;
                             int myIntegerListSize = myIntegerList.Count;
@@ -188,7 +149,7 @@ namespace Team3ADProject.Protected
 
                             //update back the difference(UserInput - ActualSupplyQuantityValue) in inventory
                             int difference = ActualSupplyQuantityValue - UserInput;
-                            BusinessLogic.updateInventory(ItemCode,difference);
+                            BusinessLogic.updateInventory(ItemCode, difference);
 
 
                         }
@@ -198,13 +159,13 @@ namespace Team3ADProject.Protected
                 }
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception exx = ex;
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Oops ! Something went wrong. Please try again !')", true);
             }
 
-            
+
         }
 
 
@@ -215,7 +176,7 @@ namespace Team3ADProject.Protected
 
             if (PinCorrect())
             {
-                Response.Write("\nPin entered is correct");
+                // Response.Write("\nPin entered is correct");
             }
             else
             {

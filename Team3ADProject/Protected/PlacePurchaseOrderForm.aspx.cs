@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,12 +12,26 @@ namespace Team3ADProject.Protected
 {
     public partial class PlacePurchaseOrderForm : System.Web.UI.Page
     {
-        string itemid;
+        static string itemid;
+        static employee user;
+
         protected void Page_Load(object sender, EventArgs e)
         {   //Get the item code
             if (Request.QueryString["itemid"] != null)
             {
                 itemid = Request.QueryString["itemid"];
+            }
+            if (Session["Employee"] != null)
+            {
+                int employeeid = (int)Session["Employee"];
+                user = BusinessLogic.GetEmployeeById(employeeid);
+            }
+            else
+            {
+                //hardcoded
+                Session["Employee"] = 10;
+                user = BusinessLogic.GetEmployeeById(10);
+                //redirect to login homepage
             }
 
             if (!IsPostBack)
@@ -34,12 +49,13 @@ namespace Team3ADProject.Protected
                 itemNumber.Text = itemSelected.item_number;
                 itemDescription.Text = itemSelected.description;
                 itemCurrentStock.Text = itemSelected.current_quantity.ToString();
-                quantity.Text = itemSelected.reorder_quantity.ToString();
+                TextBoxOrderQuantity.Text = itemSelected.reorder_quantity.ToString();
 
                 //Getting the user from the session and the current time to be posted on the webpage 
-                createByWho.Text = "method from session";
+                createByWho.Text = user.employee_name;
                 DateTime dateAndTime = DateTime.Now;
-                createOnWhen.Text = dateAndTime.ToString("dd/MM/yyyy");
+                createOnWhen.Text = dateAndTime.ToString("dd-MM-yyyy");
+                LabelRequiredDate.Text = dateAndTime.AddDays(28).ToString("dd-MM-yyyy");
 
                 //When dropdownlist change, change the unit price and change the total price based on the quantity
                 CalculationForUnitCostAndTotalCost();
@@ -56,45 +72,46 @@ namespace Team3ADProject.Protected
         public void CalculationForUnitCostAndTotalCost()
         {
             unitCost.Text = DropDownListSupplier.SelectedItem.Value.ToString();
-            totalCost.Text = (Convert.ToDouble(quantity.Text) * Convert.ToDouble(unitCost.Text)).ToString("C");
+            totalCost.Text = (Convert.ToDouble(TextBoxOrderQuantity.Text) * Convert.ToDouble(unitCost.Text)).ToString("C");
         }
 
+        protected void CalendarSelected(object sender, DayRenderEventArgs e)
+        {
+            if (e.Day.Date <= DateTime.Now)
+            {
+
+                e.Cell.BackColor = ColorTranslator.FromHtml("#a9a9a9");
+
+                e.Day.IsSelectable = false;
+            }
+        }
+
+        //esther-adding POitem to cart
         protected void Submit_Click(object sender, EventArgs e)
         {
-            if (Session["staging"] != null)
+            List<POStaging> alist = new List<POStaging>();
+            if (Session["StagingList"] != null)
             {
-                //var stagingitem = (List<var>)Session["staging"];
+                alist = (List<POStaging>)Session["StagingList"];
             }
-            else
+            inventory item = BusinessLogic.GetInventory(itemid);
+            string suppliername = DropDownListSupplier.SelectedItem.Text;
+            string supplierid = BusinessLogic.GetSupplierID(suppliername);
+            int orderqty = Int32.Parse(TextBoxOrderQuantity.Text);
+            double unitprice = Double.Parse(unitCost.Text);
+            string requiredDate = DateTime.Now.AddDays(28).ToString("yyyy-MM-dd");
+            try
             {
-                //stagingitem = new List<StagingItem>();
+                POStaging poItem = new POStaging(item, supplierid, orderqty, unitprice, DateTime.ParseExact(requiredDate, "yyyy-MM-dd", null), user);
+                Session["StagingList"] = BusinessLogic.AddToStaging(alist, poItem);
+
             }
+            catch (Exception ex)
+            {
+                Label1.Text = ex.Message;
+            }
+            Response.Redirect("POStagingSummary.aspx");
 
-            LogicUniversityEntities entities = new LogicUniversityEntities();
-
-            var newpurchaseorderdetail = entities.purchase_order_detail.Create();
-            
-            newpurchaseorderdetail.item_number = itemDescription.Text;
-
-            Session["staging"] = newpurchaseorderdetail;
-
-            Response.Redirect("ClerkInventory.aspx");
-
-
-            //StagingItem newItem = new StagingItem();
-
-            //newItem.item_id = itemDescription.Text;
-            //newItem.date_required = Calendar1.SelectedDate.ToString("dd/MM/yyyy");
-            //newItem.quantity = quantity.Text;
-            //newItem.buyer = createByWho.Text;
-            //newItem.unit_price = Convert.ToDouble(unitCost.Text);
-            //newItem.supplier = DropDownListSupplier.SelectedItem.Text;
-
-            //stagingitem.Add(newItem);
-
-            //Session["staging"] = stagingitem;
-
-            //Response.Redirect("ClerkInventory.aspx");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)

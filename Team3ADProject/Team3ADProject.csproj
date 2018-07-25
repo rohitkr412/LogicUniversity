@@ -63,7 +63,9 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -149,7 +151,13 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Image\report-cover.jpg" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\Master.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Sites\Dashboard.css" />
@@ -210,6 +218,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Logout.aspx" />
     <Content Include="MasterPage.Master" />
     <Content Include="Guest.Master" />
     <EntityDeploy Include="Model\LogicUniversityModel.edmx">
@@ -219,7 +228,6 @@
     <Content Include="Model\LogicUniversityModel.edmx.diagram">
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
     </Content>
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Model\LogicUniversityModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
@@ -230,6 +238,8 @@
       <DependentUpon>LogicUniversityModel.edmx</DependentUpon>
       <LastGenOutput>LogicUniversityModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Protected\AdjustmentForm1.aspx" />
+    <Content Include="Protected\budget.aspx" />
     <Content Include="Protected\Change Collection Point.aspx" />
     <Content Include="Protected\CollectionList.aspx" />
     <Content Include="Protected\Dashboard.aspx" />
@@ -248,7 +258,10 @@
     <Content Include="Protected\DisbursementSorting.aspx" />
     <Content Include="Protected\AcknowledgeDistributionList.aspx" />
     <Content Include="Protected\PendingPODetails.aspx" />
+    <Content Include="Protected\POStagingDetails.aspx" />
+    <Content Include="Protected\POStagingSummary.aspx" />
     <Content Include="Protected\PurchaseOrderApprovalDetails.aspx" />
+    <Content Include="Protected\Reallocate.aspx" />
     <Content Include="Protected\RequestCart.aspx" />
     <Content Include="Protected\RequestConfirm.aspx" />
     <Content Include="Protected\ViewCollectionInformation.aspx" />
@@ -259,17 +272,13 @@
     <Content Include="Protected\ClerkInventory.aspx" />
     <Content Include="Protected\ViewPOHistory.aspx" />
     <Content Include="Protected\ViewROSpecialRequest.aspx" />
-    <Content Include="Protected\WebForm2.aspx" />
+    <Content Include="Protected\AdjustmentForm.aspx" />
     <Content Include="Protected\Report.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\Custom\Charts.js" />
     <Content Include="Scripts\jquery-1.12.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.canvasjs.min.js" />
@@ -316,6 +325,7 @@
     <Compile Include="Code\cart.cs" />
     <Compile Include="Code\CollectionListItem.cs" />
     <Compile Include="Code\Constants.cs" />
+    <Compile Include="Code\POStaging.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -333,6 +343,13 @@
     <Compile Include="Guest.Master.designer.cs">
       <DependentUpon>Guest.Master</DependentUpon>
     </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="MasterPage.Master.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -346,7 +363,7 @@
     <Compile Include="Model\budget.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\cInventory.cs" />
+    <Compile Include="Code\cInventory.cs" />
     <Compile Include="Model\collection.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
@@ -437,7 +454,13 @@
     <Compile Include="Model\getStationariesOrderedLastMonthByCategory_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\getUserByToken1_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\getUserByToken_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\getUserTokenByUsername1_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\getUserTokenByUsername_Result.cs">
@@ -497,10 +520,25 @@
     <Compile Include="Model\spAcknowledgeDistributionList_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\spFindAllDptRequiredQtyByItem_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spFindDptIdAndRequiredQtyByItem_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\spGetCollectionList_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\spGetDepartmentList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetFullCollectionROIDList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetLatestCollectionDetailId_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetListOfROIDForDisbursement_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\spGetPlaceIdFromDptId_Result.cs">
@@ -512,10 +550,19 @@
     <Compile Include="Model\spGetRODetailsByROId_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\spViewCollectionList_Result.cs">
+    <Compile Include="Model\spGetRODListForSorting_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spGetSortingTableByDpt_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spReallocateQty_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\spGetUndisbursedROList_Result.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spViewCollectionList_Result.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\sp_geteachPendingPOList_Result.cs">
@@ -533,7 +580,24 @@
     <Compile Include="Model\supplier_itemdetail.cs">
       <DependentUpon>LogicUniversityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\unique_id.cs">
+      <DependentUpon>LogicUniversityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protected\AdjustmentForm1.aspx.cs">
+      <DependentUpon>AdjustmentForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\AdjustmentForm1.aspx.designer.cs">
+      <DependentUpon>AdjustmentForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\budget.aspx.cs">
+      <DependentUpon>budget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\budget.aspx.designer.cs">
+      <DependentUpon>budget.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Protected\ClerkInventory.aspx.cs">
       <DependentUpon>ClerkInventory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -604,6 +668,20 @@
     <Compile Include="Protected\PlacePurchaseOrderForm.aspx.designer.cs">
       <DependentUpon>PlacePurchaseOrderForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Protected\POStagingDetails.aspx.cs">
+      <DependentUpon>POStagingDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\POStagingDetails.aspx.designer.cs">
+      <DependentUpon>POStagingDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\POStagingSummary.aspx.cs">
+      <DependentUpon>POStagingSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\POStagingSummary.aspx.designer.cs">
+      <DependentUpon>POStagingSummary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Protected\PurchaseOrderApproval.aspx.cs">
       <DependentUpon>PurchaseOrderApproval.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -617,6 +695,13 @@
     </Compile>
     <Compile Include="Protected\PurchaseOrderApprovalDetails.aspx.designer.cs">
       <DependentUpon>PurchaseOrderApprovalDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Protected\Reallocate.aspx.cs">
+      <DependentUpon>Reallocate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Protected\Reallocate.aspx.designer.cs">
+      <DependentUpon>Reallocate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Protected\Report.aspx.cs">
       <DependentUpon>Report.aspx</DependentUpon>
@@ -681,8 +766,8 @@
     <Compile Include="Protected\ViewROSpecialRequest.aspx.designer.cs">
       <DependentUpon>ViewROSpecialRequest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\WebForm2.aspx.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
+    <Compile Include="Protected\AdjustmentForm.aspx.cs">
+      <DependentUpon>AdjustmentForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Protected\RequestConfirm.aspx.cs">
@@ -699,8 +784,8 @@
     <Compile Include="Protected\ViewPOHistory.aspx.designer.cs">
       <DependentUpon>ViewPOHistory.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Protected\WebForm2.aspx.designer.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
+    <Compile Include="Protected\AdjustmentForm.aspx.designer.cs">
+      <DependentUpon>AdjustmentForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Services\AndroidService.svc.cs">
       <DependentUpon>AndroidService.svc</DependentUpon>
@@ -772,8 +857,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -795,7 +878,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50772</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

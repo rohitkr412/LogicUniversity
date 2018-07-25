@@ -13,6 +13,15 @@ namespace Team3ADProject.Protected {
     public partial class WebForm1 {
         
         /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
         /// ddlCategory control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace Team3ADProject.Protected {
         protected global::System.Web.UI.WebControls.Button Button2;
         
         /// <summary>
+        /// Label4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
         /// CheckBox1 control.
         /// </summary>
         /// <remarks>
@@ -67,6 +85,33 @@ namespace Team3ADProject.Protected {
         protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
         
         /// <summary>
+        /// CheckBox2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox2;
+        
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
         /// gvInventoryList control.
         /// </summary>
         /// <remarks>
@@ -74,5 +119,23 @@ namespace Team3ADProject.Protected {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvInventoryList;
+        
+        /// <summary>
+        /// LabelLOWINSTOCK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelLOWINSTOCK;
+        
+        /// <summary>
+        /// btnAllPO control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAllPO;
     }
 }

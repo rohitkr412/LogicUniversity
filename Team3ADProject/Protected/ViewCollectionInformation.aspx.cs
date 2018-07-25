@@ -17,7 +17,7 @@ namespace Team3ADProject.Protected
 
         protected void Load_Collections()
         {
-            gridview1.DataSource = BusinessLogic.ViewCollectionList();
+            gridview1.DataSource = BusinessLogic.ViewCollectionListNew();
             gridview1.DataBind();
         }
 

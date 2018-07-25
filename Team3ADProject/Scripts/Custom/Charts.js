@@ -1,10 +1,21 @@
-﻿
-/* 
+﻿/* 
  * Chart.js usage:
- * Just add in <div id="testChart"></div> in the html file
+ * Just add in <div id="testChart" customAttribute="value"></div> in the html file
+ * Create <div id="chartMessage" to output chart messages
  * 
+ * 
+ * 
+ * testChart: A simple chart to test whether canvas.js is running
+ * requisitionOrderStatusChart: A doughnut chart that shows portion of RO Status
+ * requisitionOrderDateChart: A column chart that shows dates of requisition orders made
+ * purchaseQuantityByItemQuantityBarChart: A Column chart that shows stationaries purchased by category
+ *  - monthsParam: Sets the number of months to look back up to present
+ *  pendingPurchaseOrderCountBySupplierChart: A Column chart showing pending purchase orders by each supplier
  */
-window.onload = function () {
+$(document).ready(function () {
+
+
+
 
     // A test chart to show that the javascript is running
     if ($("#testChart").length == 1) {
@@ -43,7 +54,7 @@ window.onload = function () {
     if ($("#requisitionOrderStatusChart").length == 1) {
 
         // Fetch a list of requisition orders
-        $.getJSON("http://localhost:61187/Services/Service.svc/RequisitionOrder/List", {},
+        $.getJSON("http://" + window.location.host + "/Services/Service.svc/RequisitionOrder/List", {},
             function (data) {
 
                 var approvedCount = 0;
@@ -89,8 +100,8 @@ window.onload = function () {
     /* requisitionOrderDateChart
      * Generates a scatter plot that shows the date when requisition orders are made.
      */
-    if ($("#chartContainer").length == 1) {
-        $.getJSON("http://localhost:61187/Services/Service.svc/RequisitionOrder/List", {},
+    if ($("#requisitionOrderDateChart").length == 1) {
+        $.getJSON("http://" + window.location.host + "/Services/Service.svc/RequisitionOrder/List", {},
             function (data) {
                 console.log(data[0].RequisitionDate);
                 console.log(ConvertToDatetime(data[0].RequisitionDate));
@@ -98,7 +109,7 @@ window.onload = function () {
                 // Prepare data
                 var dataPoints = [];
 
-                var chart = new CanvasJS.Chart("chartContainer",
+                var chart = new CanvasJS.Chart("requisitionOrderDateChart",
                     {
                         title: {
                             text: "Simple Date-Time Chart"
@@ -123,7 +134,7 @@ window.onload = function () {
 
                 $.each(data, function (key, value) {
                     dataPoints.push({ x: ConvertToDatetime(value.RequisitionDate), y: 1 });
-                });	
+                });
 
                 chart.render();
             });
@@ -131,8 +142,153 @@ window.onload = function () {
 
     }
 
+    /* purchaseQuantityByItemCategory BarChart
+     * Generates a bar chart stationary purchased grouped by categories.
+     */
+    if ($("#purchaseQuantityByItemCategoryBarChart").length == 1) {
+        
+        // Prepare data
+        var dataPoints = [];
 
-};
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        if (startDate == undefined || endDate == undefined) {
+            startDate = "01-01-1965";
+            endDate = "12-31-3000";
+        }
+
+        // Fetch current month data
+        $.getJSON("http://" + window.location.host + "/Services/Service.svc/Chart/PurchaseQuantityByItemCategory/" + startDate + "/" + endDate, {},
+            function (data) {
+                // Place data on the chart
+                $.each(data, function (key, value) {
+                    dataPoints.push({ y: value.quantity, label: value.category });
+                });
+                
+                // Render the chart
+                var chart = new CanvasJS.Chart("purchaseQuantityByItemCategoryBarChart",
+                    {
+                        title: {
+                            text: "Stationary categories purchased from " + startDate + " to " + endDate
+                        },
+                        theme: "theme2",
+                        animationEnabled: true,
+                        axisX: {
+                            title: "Item Category",
+                            gridThickness: 2
+                        },
+                        axisY: {
+                            title: "Quantity"
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                chart.render();
+            });
+
+
+    }
+
+    // A chart that displays items requested by each department based on a given time.
+    if ($("#requisitionQuantityByDepartmentChart").length == 1) {
+
+        // Prepare data
+        var dataPoints = [];
+
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
+        if (startDate == undefined || endDate == undefined) {
+            startDate = "01-01-1965";
+            endDate = "12-31-3000";
+        }
+
+        $.getJSON("http://" + window.location.host + "/Services/Service.svc/Chart/getRequisitionQuantityByDepartmentWithinTime/" + startDate + "/" + endDate, {},
+            function (data) {
+                // Place data on the chart
+                $.each(data, function (key, value) {
+                    dataPoints.push({ y: value.ItemRequestQuantity, label: value.DepartmentId });
+                });
+                
+                // Render the chart
+                var chart = new CanvasJS.Chart("requisitionQuantityByDepartmentChart",
+                    {
+                        title: {
+                            text: "Total stationaries requested by each department from " + startDate + " to " + endDate
+                        },
+                        theme: "theme2",
+                        animationEnabled: true,
+                        axisX: {
+                            title: "Department",
+                            gridThickness: 2
+                        },
+                        axisY: {
+                            title: "Quantity"
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                chart.render();
+            });
+    }
+
+    // A test chart to show that the javascript is running
+    if ($("#pendingPurchaseOrderCountBySupplierChart").length == 1) {
+
+        // Prepare data
+        var dataPoints = [];
+
+        $.getJSON("http://" + window.location.host + "/Services/Service.svc/Chart/getPendingPurchaseOrderCountBySupplier", {},
+            function (data) {
+                // Place data on the chart
+                $.each(data, function (key, value) {
+                    dataPoints.push({ y: value.Count, label: value.SupplierId });
+                });
+
+                // Render the chart
+                var chart = new CanvasJS.Chart("pendingPurchaseOrderCountBySupplierChart",
+                    {
+                        title: {
+                            text: "Count of Pending purchase orders by suppliers"
+                        },
+                        theme: "theme2",
+                        animationEnabled: true,
+                        axisX: {
+                            title: "Department",
+                            gridThickness: 2
+                        },
+                        axisY: {
+                            title: "Quantity"
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                chart.render();
+
+            });
+    }
+
+
+
+});
+
+
+
+
+
 
 
 
