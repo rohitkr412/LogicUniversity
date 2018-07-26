@@ -80,15 +80,7 @@ namespace Team3ADProject.Services
                     var first = query.First();
                     String role = null;
 
-                    if (System.Web.Security.Roles.Enabled)
-                    {
-                        role = Roles.GetRolesForUser(first.user_id).FirstOrDefault();
-                    }
-
-                    else
-                    {
-                        role = Constants.ROLES_STORE_CLERK;
-                    }
+                    role = Roles.GetRolesForUser(first.user_id).FirstOrDefault();
 
                     return new WCF_Employee(first.employee_id, first.employee_name, first.email_id, first.user_id, first.department_id, first.supervisor_id, first.token, role);
                 }
@@ -102,30 +94,36 @@ namespace Team3ADProject.Services
         }
 
         // Takes username and password in
-        // Returns a token if there is one for the user, null if there is none.
-        // TODO: Add username and password verification, the service only fetches a token for now
+        // Returns a token and employee data if there is one for the user, null if there is none.
         public WCF_Employee Login(string username, string password)
         {
             WCF_Employee wcfEmployee = null;
 
             // If login succeeds, fetch the token, otherwise, return null
-            // TODO: Validate username and password
-            var context = new LogicUniversityEntities();
-            var query = from x in context.employees where x.user_id == username select x;
-            var result = query.ToList();
-
-            if (query.Any())
+            // Validate username and password
+            if (Membership.ValidateUser(username, password))
             {
-                // Generate a token for the resulting employee.
-                String token = GenerateToken();
+                // Fetch or generate token
+                var context = new LogicUniversityEntities();
+                var query = from x in context.employees where x.user_id == username select x;
+                var result = query.ToList();
 
-                // Store token in database
-                result.First().token = token;
-                System.Diagnostics.Debug.WriteLine(context.SaveChanges());
+                if (query.Any())
+                {
+                    // Generate a token for the resulting employee.
+                    String token = GenerateToken();
 
-                // Pass the token to the service consumer
-                wcfEmployee = new WCF_Employee(0, "", "", username, "", 0, token, "");
+                    // Store token in database
+                    var first = result.First();
+                    first.token = token;
+                    System.Diagnostics.Debug.WriteLine(context.SaveChanges());
+
+                    // Pass the token to the service consumer
+                    wcfEmployee = new WCF_Employee(first.employee_id, first.employee_name, first.email_id, username, first.department_id, first.supervisor_id, token, Roles.GetRolesForUser(username).FirstOrDefault());
+                }
             }
+
+            // Return the token to user
             return wcfEmployee;
         }
 
@@ -143,17 +141,106 @@ namespace Team3ADProject.Services
             return "done";
         }
 
-        public List<WCF_Requisition_Order> GetAllRequisitionByEmployee(string id)
+        public List<WCF_CollectionItem> getCollectionList()
         {
-            int employeeId = Int32.Parse(id.Trim());
-            List<requisition_order> list = BusinessLogic.GetAllRequisitionByEmployee(employeeId);
-            List<WCF_Requisition_Order> returnlist = new List<WCF_Requisition_Order>();
-            foreach(requisition_order a in list)
+            List<WCF_CollectionItem> wcfList = new List<WCF_CollectionItem>();
+
+            var result = BusinessLogic.GetCollectionList();
+
+            foreach (var i in result)
             {
-                returnlist.Add(new WCF_Requisition_Order(a.requisition_id, a.employee_id, a.requisition_status, a.requisition_date, a.head_comment));
+                wcfList.Add(new WCF_CollectionItem(i.item_number.Trim(), (int)i.quantity_ordered, i.description.Trim(), i.current_quantity, i.unit_of_measurement.Trim()));
             }
 
-            return returnlist;
+            return wcfList;
         }
+
+
+        //Tharrani - start
+        //return active inventory list
+        public List<WCF_Inventory> GetActiveInventory(string token)
+        {
+            //if (AuthenticateToken(token))
+            //{
+            List<inventory> i = BusinessLogic.GetActiveInventory();
+            List<WCF_Inventory> list = new List<WCF_Inventory>();
+            foreach (inventory x in i)
+            {
+                list.Add(new WCF_Inventory(x.item_number.Trim(), x.description.Trim(), x.category.Trim(), x.unit_of_measurement.Trim(), x.current_quantity.ToString(), x.reorder_level.ToString(), x.reorder_quantity.ToString(), x.item_bin.Trim(), x.item_status.Trim()));
+            }
+            return list;
+            //}
+            //else
+            //{
+            //   return null;
+            //}
+        }
+
+        //return inventory matching search criteria
+        public List<WCF_Inventory> SearchInventory(string token, string search)
+        {
+            //if (AuthenticateToken(token))
+            //{
+            List<WCF_Inventory> list = new List<WCF_Inventory>();
+            List<inventory> i = BusinessLogic.SearchActiveInventory(search);
+            foreach (inventory x in i)
+            {
+                list.Add(new WCF_Inventory(x.item_number.Trim(), x.description.Trim(), x.category.Trim(), x.unit_of_measurement.Trim(), x.current_quantity.ToString(), x.reorder_level.ToString(), x.reorder_quantity.ToString(), x.item_bin.Trim(), x.item_status.Trim()));
+            }
+            return list;
+            //}
+            //else
+            //{
+            //  return null;
+            // }
+        }
+
+        public WCF_Inventory GetSelectedInventory(string token, string id)
+        {
+            //if (AuthenticateToken(token))
+            //{
+            inventory x = BusinessLogic.GetInventoryById(id);
+            return new WCF_Inventory(x.item_number.Trim(), x.description.Trim(), x.category.Trim(), x.unit_of_measurement.Trim(), x.current_quantity.ToString(), x.reorder_level.ToString(), x.reorder_quantity.ToString(), x.item_bin.Trim(), x.item_status.Trim());
+            //}
+            //else
+            //{
+            //  return null;
+            // }
+        }
+
+        //Add new requisition order
+        public string AddNewRequest()
+        {
+            //if (AuthenticateToken(token))
+            //{
+            //WCF_Employee emp = GetEmployeeByToken(token);
+            int emp_id = 16; //Convert.ToInt32(emp.EmployeeId);
+            string Depid = "ENGL"; //emp.DepartmentId;
+            DateTime d = DateTime.Now.Date;
+            unique_id u = BusinessLogic.getlastrequestid(Depid);
+            int i = (int)u.req_id + 1;
+            string id = Depid + "/" + DateTime.Now.Year.ToString() + "/" + i;
+            BusinessLogic.AddNewRequisitionOrder(id, emp_id, d);
+            BusinessLogic.updatelastrequestid(Depid, i);
+            return id;
+            // }
+
+            //else
+            //   return null;
+        }
+
+        //Add new requisition order detail
+        public void AddNewRequestDetail(WCF_ReqCart r)
+        {
+            int q = r.q;
+            string id = r.Id.Replace(@"\", "");
+            inventory inv = BusinessLogic.GetInventoryById(r.getI.Trim()); ;
+            cart c = new cart(inv, q);
+            BusinessLogic.AddRequisitionOrderDetail(c, id);
+        }
+
+        //Tharrani – End
+
+
     }
 }
