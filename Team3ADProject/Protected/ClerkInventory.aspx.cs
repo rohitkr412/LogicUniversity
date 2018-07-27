@@ -13,11 +13,11 @@ namespace Team3ADProject.Protected
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        private static List<cInventory> cList = new List<cInventory>();
-        private static List<cInventory> cCatList = new List<cInventory>();
-        private static List<cInventory> lowinstock = new List<cInventory>();
-        private static List<cInventory> lisPOAll = new List<cInventory>();
-        private static employee user;
+        private List<cInventory> cList = new List<cInventory>();
+        private List<cInventory> cCatList = new List<cInventory>();
+        private  List<cInventory> lowinstock = new List<cInventory>();
+        private  List<cInventory> lisPOAll = new List<cInventory>();
+        private  employee user;
         protected void loadGrid(List<cInventory> list)
         {
             gvInventoryList.DataSource = list;

@@ -1,0 +1,40 @@
+﻿body {
+    background-color: #e1ebf8;
+}
+
+.body-content {
+    background-color: #f3f8fb;
+
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+    margin-top: 2.5vh;
+    border-radius: 1.618%;
+    min-height: 85vh;
+}
+
+/*
+    Utilities
+*/
+.chart-container{
+    height:50vh;
+    width: 50vw;
+}
+
+.flexbox-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexbox-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+    Bootstrap custom template theme below
+*/
+

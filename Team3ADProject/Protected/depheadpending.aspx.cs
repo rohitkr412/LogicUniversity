@@ -61,6 +61,7 @@ namespace Team3ADProject.Protected
             series.Points.AddXY("", budget);
             series.Points.AddXY("Consumed", spent);
 
+
         }
     }
 }
