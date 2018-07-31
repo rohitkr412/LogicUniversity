@@ -178,6 +178,16 @@ namespace Team3ADProject.Code
             context.SaveChanges();
             employee y = context.employees.Where(x => x.employee_id == id).FirstOrDefault();
             Roles.AddUserToRole(y.user_id, Constants.ROLES_DEPARTMENT_HEAD_TEMP);
+            string messagebody = "The following person has been appointed as the temporary head for the approval of requisition order \n \n" + y.employee_name.ToString();
+            string messagebody1 = "Congratulations \n \n You have been appointed as the temporary head for the approval \n \n";
+            var allemployees = context.employees.Where(x => x.department_id == dept && x.employee_id != id && x.employee_id != d.head_id).ToList<employee>();
+            List<string> allemails = new List<string>();
+            foreach (employee email in allemployees)
+            {
+                allemails.Add(email.email_id);
+            }
+            BusinessLogic.sendMail(allemails, "Temporary head", messagebody);
+            BusinessLogic.sendMail(y.email_id, "Temporary head", messagebody1);
         }
 
         public static string gettemporaryheadname(string dept)
@@ -1163,6 +1173,18 @@ namespace Team3ADProject.Code
         public static void updatecollectionlocation(string dept, int id)
         {
             context.updatecollectiondepartment(dept, id);
+            string location = context.collections.Where(x => x.place_id == id).FirstOrDefault<collection>().collection_place.ToString();
+            string department = context.departments.Where(x => x.department_id == dept).FirstOrDefault<department>().department_name.ToString();
+            string messagebody = "The following location for" + department + "has been selected as new location for collection of stationery \n \n" + location;
+            //sending the email to store on location change
+            var query =context.employees.Where(x => x.department_id == "STOR" && x.supervisor_id == 13).ToList();
+
+            List<string> emailList = new List<string>();
+            foreach(employee email in query)
+            {
+                emailList.Add(email.email_id);
+            }
+            BusinessLogic.sendMail(emailList, "Location Change", messagebody);
         }
 
         public static List<budget> getbudget(string dept)
@@ -1457,7 +1479,10 @@ namespace Team3ADProject.Code
         public static void SpecialRequestReadyUpdatesCDRDD(int placeId, DateTime collectionDate, string ro_id, string dpt_id)
         {
             string collectionStatus = "Pending";
-
+            string emailAdd = BusinessLogic.GetDptRepEmailAddFromDptID(dpt_id);
+            string subj = "Your ordered stationery is ready for collection";
+            string body = "Dear Department Rep, your stationery order is ready for collection. Please procede to your usual collection point at the correct time.";
+            BusinessLogic.sendMail(emailAdd, subj, body);
             context.spSpecialRequestReady(placeId, collectionDate, collectionStatus, ro_id, dpt_id);
         }
 

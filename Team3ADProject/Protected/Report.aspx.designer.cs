@@ -22,6 +22,15 @@ namespace Team3ADProject.Protected {
         protected global::System.Web.UI.WebControls.DropDownList ChartList;
         
         /// <summary>
+        /// ChartList_DeptHead control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ChartList_DeptHead;
+        
+        /// <summary>
         /// startDate control.
         /// </summary>
         /// <remarks>

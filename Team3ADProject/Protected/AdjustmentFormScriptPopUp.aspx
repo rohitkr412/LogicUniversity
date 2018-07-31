@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdjustmentForm1.aspx.cs" Inherits="Team3ADProject.Protected.AdjustmentForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdjustmentFormScriptPopUp.aspx.cs" Inherits="Team3ADProject.Protected.WebForm2" %>
 
 <!DOCTYPE html>
 
@@ -7,7 +7,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="<%=ResolveUrl("~/Content/bootstrap.css")%>" />
     <link rel="stylesheet" href="<%=ResolveUrl("~/Content/bootstrap-theme.css")%>" />
-    <title></title>
+    <title>Adjustment Form</title>
+    <style type="text/css">
+        .auto-style1 {
+            height: 42px;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,11 +20,11 @@
             <div>
                 <asp:Label ID="Label2" runat="server" Text="Adjustment Form" Font-Bold="True" Font-Size="XX-Large"></asp:Label>
             </div>
-            <div>
+            
                 <table>
                     <tr>
                         <td>
-                            <asp:Label ID="Label4" runat="server" Text="Created on: "></asp:Label>
+                            <asp:Label ID="Label4" runat="server" Text="Created On"></asp:Label>
                         </td>
                         <td>
                             <asp:Label ID="LabelDate" runat="server" Text="date"></asp:Label>
@@ -33,15 +38,9 @@
                             <asp:Label ID="LabelName" runat="server" Text="name"></asp:Label>
                         </td>
                     </tr>
-                </table>
-            </div>
-            <asp:Label ID="LabelError" runat="server" ForeColor="Red"></asp:Label>
-            <br />
-            <div>
-                <table>
-                    <tr>
+                 <tr>
                         <td>
-                            <asp:Label ID="lbinum" runat="server" Text="Item no. "></asp:Label>
+                            <asp:Label ID="lbinum" runat="server" Text="Item Number"></asp:Label>
                         </td>
                         <td>
                             <asp:Label ID="LabelItemNum" runat="server" Text="Label"></asp:Label>
@@ -66,7 +65,8 @@
                     <tr>
                         <td>
                             <asp:Label ID="lbuprice" runat="server" Text="Unit Price "></asp:Label>
-                        </t$<asp:Label ID="LabelUnitPrice" runat="server" Text="Label"></asp:Label>
+                        </td>
+                        <td>$<asp:Label ID="LabelUnitPrice" runat="server" Text="Label"></asp:Label>
                         </td>
                     </tr>
                     <tr>
@@ -75,14 +75,19 @@
                         </td>
                         <td class="auto-style1">
                             <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="true" OnSelectedIndexChanged="TextBoxAdjustment_TextChanged">
-                                <asp:ListItem>-</asp:ListItem>
-                                <asp:ListItem Selected="True">+</asp:ListItem>
+                                <asp:ListItem>+</asp:ListItem>
+                                <asp:ListItem Selected="True">-</asp:ListItem>
                             </asp:DropDownList>
                             <asp:TextBox ID="TextBoxAdjustment" runat="server" CausesValidation="True" AutoPostBack="true" OnTextChanged="TextBoxAdjustment_TextChanged"></asp:TextBox>
-                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="TextBoxAdjustment" ErrorMessage="Quantity must be more than 0" ForeColor="Red" Operator="GreaterThan" Type="Integer" ValueToCompare="0"></asp:CompareValidator>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBoxAdjustment" ErrorMessage="No quantity stated" ForeColor="Red"></asp:RequiredFieldValidator>
+							<asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="TextBoxAdjustment" ErrorMessage="Enter value between 1 and 100,000" Type="Integer" MinimumValue ="1" MaximumValue="100000" ForeColor ="Red"></asp:RangeValidator>
+<%--                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="TextBoxAdjustment" ErrorMessage="Quantity must be more than 0" ForeColor="Red" Operator="GreaterThan" Type="Integer" ValueToCompare="0"></asp:CompareValidator>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBoxAdjustment" ErrorMessage="No quantity stated" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                         </td>
                     </tr>
+					<tr>
+						<td></td>
+						<td><asp:Label ID="LabelError" runat="server" ForeColor="Red"></asp:Label></td>
+					</tr>
                     <tr>
                         <td>
                             <asp:Label ID="lbtcost" runat="server" Text="Total cost: "></asp:Label>
@@ -102,12 +107,13 @@
                     <tr>
                         <td></td>
                         <td>
-                            <asp:Button ID="ButtonCancel" runat="server" Text="Cancel" Style="position: relative; float: right; top: 0px; margin-left: 0.5vw;" CssClass="btn btn-warning" CausesValidation="false" OnClientClick="javaScript:window.close(); return false;" />
-                            <asp:Button ID="ButtonSubmit" runat="server" Text="Submit" Style="position: relative; float: right; top: 0px;" CssClass="btn btn-primary" OnClick="ButtonSubmit_Click" OnClientClick="this.disabled=true;" UseSubmitBehavior="false"/>
+                            <asp:Button ID="ButtonCancel" runat="server" Text="Cancel" Style="position: relative; float: right; top: 0px; margin-left: 0.5vw;" CssClass="btn btn-warning" CausesValidation="false" OnClientClick="javaScript:window.close(); return false;"/>
+                            <asp:Button ID="ButtonSubmit" runat="server" Text="Submit" Style="position: relative; float: right; top: 0px;" CssClass="btn btn-primary" OnClick="ButtonSubmit_Click" CausesValidation="true" OnClientClick="this.disabled=true;" UseSubmitBehavior="false" />
                         </td>
                     </tr>
                 </table>
-                
+
+
                 <asp:Label ID="LabelGrid" runat="server" Text="Label"></asp:Label>
 
                 <div class="row" style="margin-top: 2.5vh;">
@@ -139,9 +145,27 @@
                         </asp:GridView>
                     </div>
                 </div>
-            </div>
         </div>
     </form>
-   
+    <!--
+    <script>
+        $(document).ready(function () {
+            $('#DropDownList1, #TextBoxAdjustment').change(function(){
+                var a = parseFloat($('#<%=LabelUnitPrice.ClientID%>').text());
+                var b = $('#<%=DropDownList1.ClientID%>').val();
+                var c = $('#<%=TextBoxAdjustment.ClientID%>').val();
+                var d;
+                if (c != null && $.isNumeric(c)) {
+                    if (b == '-') {
+                        d = a * (-c);
+                    } else {
+                        d = a * c;
+                    }
+                    $('#<%=LabelTotalCost.ClientID%>').text(d);
+                }
+            })
+        })
+    </script>  
+-->
 </body>
 </html>

@@ -10,7 +10,7 @@ using System.Transactions;
 
 namespace Team3ADProject.Protected
 {
-    public partial class AdjustmentForm1 : System.Web.UI.Page
+    public partial class WebForm2 : System.Web.UI.Page
     {
         static employee user;
         static inventory item;
@@ -65,7 +65,7 @@ namespace Team3ADProject.Protected
                 LabelItem.Text = item.description;
                 minusqty = BusinessLogic.ReturnPendingMinusAdjustmentQty(itemcode);
                 int plusqty = BusinessLogic.ReturnPendingPlusAdjustmentQty(itemcode);
-                GridViewAdjMinus.DataSource = adjlist.Where(x => x.adjustment_quantity < 0);
+                GridViewAdjMinus.DataSource = adjlist.Where(x=>x.adjustment_quantity<0);
                 GridViewAdjMinus.DataBind();
                 GridViewAdjPlus.DataSource = adjlist.Where(x => x.adjustment_quantity > 0);
                 GridViewAdjPlus.DataBind();
@@ -74,7 +74,7 @@ namespace Team3ADProject.Protected
                     LabelGrid.Visible = false;
                     if (minusqty != 0)
                     {
-                        LabelGridMinus.Text = "Pending adjustment qty to be removed raised: " + minusqty;
+                        LabelGridMinus.Text = "Pending adjustment qty to be removed raised: "+minusqty;
                     }
                     else
                     {
@@ -96,14 +96,16 @@ namespace Team3ADProject.Protected
                     LabelGridMinus.Visible = false;
                     LabelGridPlus.Visible = false;
                 }
+
+
             }
 
         }
 
         protected void ButtonCancel_Click(object sender, EventArgs e)
         {
-            //Response.Redirect(ResolveUrl("~/Protected/ClerkInventory"));
-            Response.Write("<script language='javascript'> { window.close();}</script>");
+            Response.Redirect(ResolveUrl("~/Protected/ClerkInventory"));
+            //Response.Write("<script language='javascript'> { window.close();}</script>");
         }
 
         protected double TotalPrice()
@@ -145,16 +147,16 @@ namespace Team3ADProject.Protected
 
         protected void ButtonSubmit_Click(object sender, EventArgs e)
         {
+            ButtonSubmit.Enabled = false;
             int qty = Int32.Parse(TextBoxAdjustment.Text);
             int submitqty = ReturnQuantity();
-            ButtonSubmit.Enabled = false;
             if (qty != 0)
             {
                 if (submitqty < 0)
                 {
-                    if (Math.Abs(submitqty) > (item.current_quantity + minusqty))
+                    if (Math.Abs(submitqty) > (item.current_quantity+minusqty))
                     {
-                        LabelError.Text = "Entered quantity is > current quantity";
+                        LabelError.Text = "The quantity entered has exceed the outstanding pending quantity to be removed. Please review.";
                     }
                     else
                     {
@@ -182,10 +184,12 @@ namespace Team3ADProject.Protected
             if (price > 250)
             {
                 return BusinessLogic.RetrieveEmailByEmployeeID(headid);
+                //return "e0283390@u.nus.edu";
             }
             else
             {
                 return BusinessLogic.RetrieveEmailByEmployeeID(supid);
+                //return "e0283390@u.nus.edu";
             }
         }
 
@@ -197,7 +201,7 @@ namespace Team3ADProject.Protected
             {
                 adjustment a = new adjustment()
                 {
-                    adjustment_date = DateTime.ParseExact(today, "yyyy-MM-dd", null),
+                    adjustment_date = DateTime.ParseExact(today, "yyyy-MM-dd", null ),
                     employee_id = user.employee_id,
                     item_number = item.item_number,
                     adjustment_quantity = ReturnQuantity(),
@@ -217,6 +221,9 @@ namespace Team3ADProject.Protected
                         BusinessLogic.sendMail(email, "New Adjustment Request awaiting for approval", user.employee_name + " has submitted a new Adjustment Request for approval.");
                     }
                     //Response.Redirect("ClerkInventory.aspx");
+                    String url = "ClerkInventory.aspx";
+                    Response.Write(BusinessLogic.MsgBox("Success: The adjustment request has been sent for approval"));
+                    Response.Write("<script language=JavaScript>  opener.location.replace('" + url + "'); </script>");
                     Response.Write("<script language='javascript'> { window.close();}</script>");
                 }
                 catch (System.Transactions.TransactionException ex)

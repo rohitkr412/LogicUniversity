@@ -271,8 +271,44 @@ namespace Team3ADProject.Services
 
         }
 
+        // Reallocate
+        public List<WCF_SortingItem> GetReallocateList(string itemNum)
+        {
+            List<WCF_SortingItem> wcfList = new List<WCF_SortingItem>();
+            var result = BusinessLogic.GetReallocateList(itemNum);
+
+            foreach (var i in result)
+            {
+                wcfList.Add(new WCF_SortingItem(i.item_number.Trim(), i.description.Trim(), (int)i.item_requisition_quantity, (int)i.item_distributed_quantity, 0, i.department_id.Trim()));
+            }
+
+            return wcfList;
+        }
+
+        //Reallocate
+        public void ResetRODTable(WCF_SortingItem ci)
+        {
+            BusinessLogic.ResetRODTable(ci.DepartmentID, ci.ItemNumber);
+        }
+
+
+        //Reallocate
+        public void UpdateRODTable(WCF_SortingItem ci)
+        {
+            BusinessLogic.UpdateRODTableOnReallocate(ci.DepartmentID, ci.ItemNumber, ci.CollectedQty);
+        }
+
+        //Reallocate
+        public void ReturnToInventory(string balance, string itemNum)
+        {
+            BusinessLogic.ReturnToInventory(Convert.ToInt32(balance), itemNum);
+        }
+
 
         //JOEL END
+
+
+
 
         //Tharrani - start
         //return active inventory list
@@ -341,6 +377,13 @@ namespace Team3ADProject.Services
                 string id = Depid + "/" + DateTime.Now.Year.ToString() + "/" + i;
                 BusinessLogic.AddNewRequisitionOrder(id, emp_id, d);
                 BusinessLogic.updatelastrequestid(Depid, i);
+                int head_id = Convert.ToInt32(BusinessLogic.GetDepartmenthead(Depid).head_id);
+                string to = BusinessLogic.GetEmployee(head_id).email_id;
+                //string to = "tharrani2192@gmail.com";
+                string ename = BusinessLogic.GetEmployee(emp_id).employee_name;
+                string sub = "Stationery System: New request raised for your approval";
+                string body = "New Request ID" + id + "has been placed by" + ename + "for your approval";
+                BusinessLogic.sendMail(to, sub, body);
                 return id;
             }
             else
@@ -392,6 +435,77 @@ namespace Team3ADProject.Services
             else
             { return null; }
         }
+
+        public List<WCF_Disbursement_List> GetDisbursement_Lists(string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                List<spViewCollectionList_Result> l = BusinessLogic.ViewCollectionListNew();
+                List<WCF_Disbursement_List> m = new List<WCF_Disbursement_List>();
+                string pin;
+                for (int i = 0; i < l.Count; i++)
+                {
+                    pin = Convert.ToString(BusinessLogic.GetDepartmentPin(l[i].department_name.Trim()));
+                    m.Add(new WCF_Disbursement_List(l[i].collection_date.ToString("dd-MM-yyyy"), l[i].collection_place, l[i].collection_time.ToString(), l[i].department_name, l[i].employee_name, Convert.ToString(l[i].collection_id), pin));
+                }
+                return m;
+            }
+            else { return null; }
+        }
+
+        public List<WCF_Disbursement_Detail> GetDisbursement_Detail(string id, string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                int collection_id = Convert.ToInt32(id.Trim());
+
+                List<spAcknowledgeDistributionList_Result> list = BusinessLogic.ViewAcknowledgementList(collection_id);
+                List<WCF_Disbursement_Detail> m = new List<WCF_Disbursement_Detail>();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    m.Add(new WCF_Disbursement_Detail(id.Trim(), list[i].item_number.Trim(), list[i].description.Trim(), Convert.ToString(list[i].ordered_quantity), Convert.ToString(list[i].supply_quantity), Convert.ToString(list[i].supply_quantity)));
+                }
+                return m;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void AcknowledgeDisbursement_Detail(WCF_Disbursement_Detail DL)
+        {
+            string token = DL.Token;
+            if (AuthenticateToken(token))
+            {
+                int collection_id = Convert.ToInt32(DL.Collection_id);
+                int ActualSupplyQuantityValue = Convert.ToInt32(DL.Receive_quantity);
+                int UserInput = Convert.ToInt32(DL.Altered_quantity);
+                string ItemCode = DL.Item_number;
+                BusinessLogic.AcknowledgeDL(collection_id, ItemCode, ActualSupplyQuantityValue, UserInput);
+            }
+        }
+
+        public void Changecollectionstatus(WCF_Disbursement_Detail DL)
+        {
+            string token = DL.Token;
+            if (AuthenticateToken(token))
+            {
+                int collection_id = Convert.ToInt32(DL.Collection_id);
+                BusinessLogic.updateCollectionStatus(collection_id);
+            }
+        }
+
+        //Tharrani End
+
+        public WCF_Inventory GetInventoryByItemNumber(string ItemNumber)
+        {
+
+            inventory inv = BusinessLogic.GetInventoryById(ItemNumber);
+            return new WCF_Inventory(inv.item_number, inv.description, inv.category, inv.unit_of_measurement, inv.current_quantity.ToString(), inv.reorder_level.ToString(), inv.requisition_order_detail.ToString(), inv.item_bin, inv.item_status);
+
+        }
+
         //Tharrani – End
 
         //Esther
@@ -413,15 +527,15 @@ namespace Team3ADProject.Services
                     employee_remark = adj.EmployeeRemark,
                     manager_remark = null,
                 };
-                String result1= BusinessLogic.CreateAdjustment(a);
+                String result1 = BusinessLogic.CreateAdjustment(a);
                 String email = BusinessLogic.SendEmailAdjustmentApproval(a);
                 try
                 {
-                    BusinessLogic.sendMail(email, "New Adjustment Request", employee.EmployeeName+" raised new adjustment request.");
+                    BusinessLogic.sendMail(email, "New Adjustment Request", employee.EmployeeName + " raised new adjustment request.");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    return "email exception "+ex.Message;   
+                    return "email exception " + ex.Message;
                 }
                 return result1;
             }
@@ -484,6 +598,148 @@ namespace Team3ADProject.Services
             }
         }
         //Esther end
+
+        //Sruthi start
+
+        public List<WCF_approvero> Findpendingros(string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                WCF_Employee emp = GetEmployeeByToken(token);
+                string dept = emp.DepartmentId;
+                List<getpendingrequestsbydepartment_Result> pendingros = BusinessLogic.ViewPendingRequests(dept);
+                List<WCF_approvero> list = new List<WCF_approvero>();
+                foreach (getpendingrequestsbydepartment_Result ro in pendingros)
+                {
+                    double sum = (ro.Sum.HasValue ? ro.Sum.Value : 0);
+                    list.Add(new WCF_approvero(ro.id.TrimEnd(), ro.Date.ToString("dd-MM-yyyy"), ro.Name.TrimEnd(), ro.status, sum.ToString()));
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public WCF_rodetails Findro(string token, string id)
+        {
+            //WCF_Employee emp = GetEmployeeByToken(token);
+            //string dept = emp.DepartmentId;
+            if (AuthenticateToken(token))
+            {
+                getpendingrequestdetails_Result result = BusinessLogic.getdetails(id);
+                double sum = result.Sum.HasValue ? result.Sum.Value : 0;
+                WCF_rodetails wcfrodet = new WCF_rodetails(result.id.TrimEnd(), result.Date.ToString("dd-MM-yyyy"), result.Name.TrimEnd(), result.status, sum.ToString());
+                return wcfrodet;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public void Approvero(WCF_approvero ro)
+        {
+            Double i = Convert.ToDouble(ro.sum);
+            int i1 = (int)Math.Round(i);
+            BusinessLogic.approvestatus(ro.requisition_id, ro.status, ro.requisition_id.Substring(0, 4), i1);
+        }
+        public void rejectro(WCF_approvero ro)
+        {
+            BusinessLogic.rejectstatus(ro.requisition_id, ro.status);
+        }
+        public List<WCF_collectionpoint> getcollection(string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                List<collection> res = BusinessLogic.GetCollection();
+                List<WCF_collectionpoint> list = new List<WCF_collectionpoint>();
+                foreach (collection c in res)
+                {
+                    string id = Convert.ToString(c.place_id);
+                    list.Add(new WCF_collectionpoint(id, c.collection_place.TrimEnd()));
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public void updatelocation(string token, WCF_collectionpoint cp)
+        {
+            if (AuthenticateToken(token))
+            {
+                WCF_Employee emp = GetEmployeeByToken(token);
+                string dept = emp.DepartmentId;
+                BusinessLogic.updatecollectionlocation(dept, Convert.ToInt32(cp.id));
+            }
+            else
+            {
+
+            }
+        }
+
+        public List<WCF_collectionhistory> gethistory(string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                WCF_Employee emp = GetEmployeeByToken(token);
+                string dept = emp.DepartmentId;
+                List<getcollectiondetailsbydepartment_Result> list = BusinessLogic.getdepartmentcollection(dept);
+                List<WCF_collectionhistory> list1 = new List<WCF_collectionhistory>();
+                foreach (getcollectiondetailsbydepartment_Result r in list)
+                {
+                    list1.Add(new WCF_collectionhistory(r.collection_place.TrimEnd(), r.collection_date.ToString("dd-MM-yyyy")));
+                }
+                return list1;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        public List<WCF_itemdetails> getitemdetails(string token, string id)
+        {
+            if (AuthenticateToken(token))
+            {
+                WCF_Employee emp = GetEmployeeByToken(token);
+                List<getitemdetails_Result> list = BusinessLogic.pendinggetitemdetails(id);
+                List<WCF_itemdetails> list1 = new List<WCF_itemdetails>();
+                foreach (getitemdetails_Result r in list)
+                {
+                    list1.Add(new WCF_itemdetails(r.description.TrimEnd(), r.item_requisition_quantity.ToString()));
+                }
+                return list1;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        public WCF_Budget getbudget(string token)
+        {
+            if (AuthenticateToken(token))
+            {
+                WCF_Employee emp = GetEmployeeByToken(token);
+                string dept = emp.DepartmentId;
+                int b1 = BusinessLogic.getbudgetbydept(dept);
+                int b2 = BusinessLogic.getspentbudgetbydept(dept);
+                WCF_Budget x = new WCF_Budget(b1.ToString(), b2.ToString());
+                return x;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        //Sruthi end
     }
 }
 
