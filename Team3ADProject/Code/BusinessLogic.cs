@@ -216,7 +216,7 @@ namespace Team3ADProject.Code
         {
             var q = from e in context.employees
                     join d in context.departments on e.department_id equals d.department_id
-                    where e.employee_name.Contains(name) && e.department_id.Equals(dept)
+                    where e.employee_name.Contains(name) && e.department_id.Equals(dept) && e.supervisor_id!=null
                     select e;
             return q.ToList();
 
@@ -908,7 +908,7 @@ namespace Team3ADProject.Code
             {
                 context.adjustments.Add(a);
                 context.SaveChanges();
-                return "success";
+                return (a.item_number.Trim() + " adj request submitted");
             }
             catch (Exception ex)
             {
@@ -1365,8 +1365,9 @@ namespace Team3ADProject.Code
         }
 
         //DisbursementSorting
-        public static List<spGetSortingTableByDpt_Result> GetSortingListByDepartment(string dpt_Id)
+        public static List<spGetSortingTableByDpt_Result> GetSortingListByDepartment(string selectedDptName)
         {
+            string dpt_Id = context.departments.Where(x => x.department_name == selectedDptName).FirstOrDefault().department_id;
             List<spGetSortingTableByDpt_Result> list = new List<spGetSortingTableByDpt_Result>();
             return list = context.spGetSortingTableByDpt(dpt_Id).ToList();
         }
@@ -1374,7 +1375,8 @@ namespace Team3ADProject.Code
         //DisbursementSorting
         public static string GetDptIdFromDptName(string dptName)
         {
-            return context.departments.Where(x => x.department_name == dptName).FirstOrDefault().department_id;
+            string s = context.departments.Where(x => x.department_name == dptName).FirstOrDefault().department_id;
+            return s.Trim();
         }
 
         //DisbursementSorting

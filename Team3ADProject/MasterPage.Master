@@ -33,7 +33,6 @@
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
                 <asp:ScriptReference Name="MsAjaxBundle" />
-                <%--<asp:ScriptReference Name="jquery" /> --%>
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
                 <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
@@ -54,8 +53,15 @@
 
 
         <%-- Custom Javascript here --%>
-        <script src="<%=ResolveUrl("~/Scripts/jquery.canvasjs.min.js")%>"></script>
+        <script src="<%=ResolveUrl("~/Scripts/canvasjs.min.js")%>"></script>
         <script src="<%=ResolveUrl("~/Scripts/Custom/Charts.js")%>"></script>
+
+        <%-- Setup session variables for javascript use --%>
+        <script>
+            // Department variable as required by Charts.js
+            var department = '<%= Session["Department"] %>';
+        </script>
+
 
 
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -85,7 +91,7 @@
                                 <li class="divider"></li>
                                 <li><a href="<%=ResolveUrl("~/Protected/CollectionList")%>">Collection List</a></li>
                                 <li><a href="<%=ResolveUrl("~/Protected/ViewROSpecialRequest")%>">Special Requistion List</a></li>
-                                <li><a href="<%=ResolveUrl("~/Protected/ViewCollectionInformation")%>">Collecion Point Disbursement</a></li>
+                                <li><a href="<%=ResolveUrl("~/Protected/ViewCollectionInformation")%>">Disbursement Locations</a></li>
                                 <li><a href="<%=ResolveUrl("~/Protected/DisbursementSorting")%>">Item Sorting</a></li>
                                 <%}%>
 

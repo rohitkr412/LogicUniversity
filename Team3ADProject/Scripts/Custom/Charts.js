@@ -53,9 +53,10 @@ $(document).ready(function () {
      */
     if ($("#requisitionOrderStatusChart").length == 1) {
 
+
         // Fetch a list of requisition orders
-        $.getJSON("http://" + hostname + "/Services/Service.svc/RequisitionOrder/List", {},
-            function (data) {
+		$.getJSON("http://" + hostname + "/Services/Service.svc/RequisitionOrder/List/" + department, {},
+			function (data) {
 
                 var approvedCount = 0;
                 var pendingCount = 0;
@@ -80,7 +81,7 @@ $(document).ready(function () {
                     animationEnabled: true,
                     theme: "theme2",
                     title: {
-                        text: "Chart of percentage between Approved, Pending, and Rejected requisition orders"
+                        text: "Count of requisition orders by status"
                     },
                     data: [
                         {
@@ -146,7 +147,7 @@ $(document).ready(function () {
      * Generates a bar chart stationary purchased grouped by categories.
      */
     if ($("#purchaseQuantityByItemCategoryBarChart").length == 1) {
-        
+
         // Prepare data
         var dataPoints = [];
 
@@ -161,6 +162,7 @@ $(document).ready(function () {
         // Fetch current month data
         $.getJSON("http://" + hostname + "/Services/Service.svc/Chart/PurchaseQuantityByItemCategory/" + startDate + "/" + endDate, {},
             function (data) {
+
                 // Place data on the chart
                 $.each(data, function (key, value) {
                     dataPoints.push({ y: value.quantity, label: value.category });
@@ -170,7 +172,7 @@ $(document).ready(function () {
                 var chart = new CanvasJS.Chart("purchaseQuantityByItemCategoryBarChart",
                     {
                         title: {
-                            text: "Stationary categories purchased from " + startDate + " to " + endDate
+							text: "Stationery purchased from " + startDate + " to " + endDate + "by item categories"
                         },
                         theme: "theme2",
                         animationEnabled: true,
@@ -197,6 +199,8 @@ $(document).ready(function () {
     // A chart that displays items requested by each department based on a given time.
     if ($("#requisitionQuantityByDepartmentChart").length == 1) {
 
+
+
         // Prepare data
         var dataPoints = [];
 
@@ -219,7 +223,7 @@ $(document).ready(function () {
                 var chart = new CanvasJS.Chart("requisitionQuantityByDepartmentChart",
                     {
                         title: {
-                            text: "Total stationeries requested by each department from " + startDate + " to " + endDate
+							text: "Stationery requested from " + startDate + " to " + endDate + "by department"
                         },
                         theme: "theme2",
                         animationEnabled: true,
