@@ -8,6 +8,7 @@ using Team3ADProject.Model;
 using Team3ADProject.Code;
 using System.Transactions;
 
+//esther
 namespace Team3ADProject.Protected
 {
     public partial class AdjustmentForm : System.Web.UI.Page
@@ -26,23 +27,24 @@ namespace Team3ADProject.Protected
                 {
                     int employeeid = (int)Session["Employee"];
                     user = BusinessLogic.GetEmployeeById(employeeid);
+                    //retrieve headid
+                    headid = BusinessLogic.DepartmentHeadID(user);
+                    //retrieve supid
+                    if (user.supervisor_id != null)
+                    {
+                        supid = (int)user.supervisor_id;
+                    }
+                    else
+                    {
+                        supid = headid;
+                    }
                 }
                 else
                 {
                     Response.Redirect(ResolveUrl("~"));
                 }
-                //retrieve headid
-                headid = BusinessLogic.DepartmentHeadID(user);
 
-                //retrieve supid
-                if (user.supervisor_id != null)
-                {
-                    supid = (int)user.supervisor_id;
-                }
-                else
-                {
-                    supid = headid;
-                }
+                
                 LabelDate.Text = DateTime.Now.ToString("dd-MM-yyyy");
                 LabelName.Text = user.employee_name;
                 UpdatePage();
@@ -102,12 +104,14 @@ namespace Team3ADProject.Protected
 
         }
 
+
+        //canccel button function return to inventory page
         protected void ButtonCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect(ResolveUrl("~/Protected/ClerkInventory"));
-            //Response.Write("<script language='javascript'> { window.close();}</script>");
         }
 
+        //Calculate total price
         protected double TotalPrice()
         {
             int qty = 0;
@@ -131,6 +135,7 @@ namespace Team3ADProject.Protected
             }
         }
 
+        //check whether qty is positive or negative
         protected int ReturnQuantity()
         {
             int qty = 0;
@@ -145,6 +150,7 @@ namespace Team3ADProject.Protected
             return qty;
         }
 
+        //submit adj for qpproval
         protected void ButtonSubmit_Click(object sender, EventArgs e)
         {
             ButtonSubmit.Enabled = false;
@@ -170,6 +176,7 @@ namespace Team3ADProject.Protected
             }
         }
 
+        //change in qty changed ttotal price
         protected void TextBoxAdjustment_TextChanged(object sender, EventArgs e)
         {
             if (TextBoxAdjustment.Text.Trim() != null)
@@ -179,6 +186,7 @@ namespace Team3ADProject.Protected
             }
         }
 
+        //retrieve email address
         protected string RetrieveEmail(double price)
         {
             if (price > 250)
@@ -193,6 +201,7 @@ namespace Team3ADProject.Protected
             }
         }
 
+        //create adj 
         protected void CreateAdjustment()
         {
             string email = RetrieveEmail(TotalPrice());
@@ -217,7 +226,7 @@ namespace Team3ADProject.Protected
                     {
                         BusinessLogic.CreateAdjustment(a);
                         tx.Complete();
-                        Response.Write(BusinessLogic.MsgBox("Success: The adjustment request has been sent for approval"));
+                        //Response.Write(BusinessLogic.MsgBox("Success: The adjustment request has been sent for approval"));
                         BusinessLogic.sendMail(email, "New Adjustment Request awaiting for approval", user.employee_name + " has submitted a new Adjustment Request for approval.");
                     }
                     Response.Redirect("ClerkInventory.aspx");
