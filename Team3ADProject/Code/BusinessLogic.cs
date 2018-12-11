@@ -204,7 +204,9 @@ namespace Team3ADProject.Code
             BusinessLogic.sendMail(y.email_id, "Temporary head", messagebody1);
         }
 
+        //Shijun
 		//Sruthi- to get the temporary head of the department
+
         public static string gettemporaryheadname(string dept)
         {
             var q = from department in context.departments
@@ -216,7 +218,9 @@ namespace Team3ADProject.Code
 
         }
 
+        //Shijun
 		//Sruthi- to revoke the temporary head
+
         public static void revoketemporaryhead(string dept)
         {
             var q = from department in context.departments where department.department_id == dept select department;
@@ -248,6 +252,7 @@ namespace Team3ADProject.Code
 
         }
 
+        //Shijun
 		//Sruthi- to save the representative details of a department
         public static void saverepdetails(string dept, int id)
         {
@@ -347,7 +352,7 @@ namespace Team3ADProject.Code
         {
             return (int)context.spGetDepartmentPin(departmentname).ToList().Single();
         }
-
+        //Shijun
         public static System.Collections.IEnumerable GetSupplier(string id)
         {
             var nestedQuery = from s in context.suppliers
@@ -796,6 +801,8 @@ namespace Team3ADProject.Code
 
         }
 
+
+        //update PO status to complete if no pending item
         public static void updatePOstatus(int po)
         {
             List<getAllViewPOHistorypendingcountbyPO_Result> pending_count = context.getAllViewPOHistorypendingcountbyPO(po).ToList();
@@ -822,16 +829,20 @@ namespace Team3ADProject.Code
             return context.employees.Where(x => x.user_id.Trim() == userid.Trim()).FirstOrDefault();
         }
 
+        //return department based on department id
         public static department GetDepartmenthead(string dept)
         {
             return context.departments.Where(x => x.department_id.Trim() == dept.Trim()).FirstOrDefault();
         }
+
+        //get last placed request id by department
 
         public static unique_id getlastrequestid(string Depid)
         {
             return context.unique_id.Where(x => x.department_id.Trim() == Depid).FirstOrDefault();
         }
 
+        //update latest request id for department
         public static void updatelastrequestid(string Depid, int i)
         {
             unique_id u = context.unique_id.Where(x => x.department_id.Trim() == Depid).FirstOrDefault();
@@ -1084,6 +1095,7 @@ namespace Team3ADProject.Code
             return list = context.spAcknowledgeDistributionList(collection_id).ToList();
         }
 
+        //Rohit
         public static int getActualSupplyQuantityValue(int collectionID, String ItemCode)
         {
             //get the supplied quantity of a particular item in a collection to compare with user's input(value entered by Dept rep during collection)
@@ -1125,7 +1137,7 @@ namespace Team3ADProject.Code
             return list = context.spViewCollectionList().ToList();
         }
 
-
+        //Rohit
         public static void AcknowledgeDL(int collection_id, string ItemCode, int ActualSupplyQuantityValue, int UserInput)
         {
             if (UserInput == ActualSupplyQuantityValue)
